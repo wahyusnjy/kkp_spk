@@ -36,6 +36,8 @@
         Route::get('/edit/{id}', [SupplierController::class, 'edit'])->name('supplier.edit')->middleware(['auth', 'verified']);
         Route::post('/update/{id}', [SupplierController::class, 'update'])->name('supplier.update')->middleware(['auth', 'verified']);
         Route::delete('/delete/{id}', [SupplierController::class, 'destroy'])->name('supplier.destroy')->middleware(['auth', 'verified']);
+        Route::get('/download-template', [SupplierController::class,'downloadTemplateImport'])->name('supplier.download-template')->middleware(['auth', 'index']);
+        Route::post('/import', [SupplierController::class,'import'])->name('supplier.import')->middleware(['auth', 'verified']);
     });
 
 
@@ -96,8 +98,19 @@
     // 📋 LAPORAN (Admin & Manager)
     Route::prefix('reports')->group(function () {
         // Laporan Supplier
-        Route::get('/suppliers', [ReportController::class, 'suppliers'])->name('reports.suppliers');
-        Route::get('/assessments', [ReportController::class, 'assessments'])->name('reports.assessments');
+        Route::prefix('suppliers')->group(function () {
+            Route::get('/', [ReportController::class, 'suppliers'])->name('reports.suppliers');
+            Route::get('/filter', [ReportController::class,'supplier_filter'])->name('reports.suppliers.filter');
+            Route::get('/export', [ReportController::class, 'exportSuppliers'])->name('reports.export.suppliers');
+        });
+        
+        
+        // Laporan Assessment
+        Route::prefix('assessments')->group(function () {
+            Route::get('/', [ReportController::class, 'assessments'])->name('reports.assessments');
+            Route::get('/filter', [ReportController::class,'assessments_filter'])->name('reports.assessments.filter');
+            Route::get('/export', [ReportController::class, 'exportAssessments'])->name('reports.export.assessments');
+        });
         
         // Export Excel/PDF
         Route::get('/export/suppliers-pdf', [ReportController::class, 'exportSuppliersPDF'])->name('reports.export.suppliers-pdf');

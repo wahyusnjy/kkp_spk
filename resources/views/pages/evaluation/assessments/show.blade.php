@@ -202,20 +202,6 @@
                             <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </a>
                         
-                        <!-- Edit Nilai -->
-                        <a href="{{ route('assessments.scores', $assessment->id) }}" 
-                           class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition flex items-center justify-between group">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-edit text-white"></i>
-                                </div>
-                                <div>
-                                    <span class="font-medium">Edit Nilai</span>
-                                    <p class="text-blue-100 text-sm">Ubah nilai yang sudah diinput</p>
-                                </div>
-                            </div>
-                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                        </a>
                     @else
                         <!-- Lihat Hasil TOPSIS -->
                         <a href="{{ route('results.show', $assessment->id) }}" 

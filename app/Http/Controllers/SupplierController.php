@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Imports\SupplierImport;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Supplier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SupplierController extends Controller
 {
@@ -39,12 +42,14 @@ class SupplierController extends Controller
             'kontak' => 'required',
             'alamat' => 'required',
         ]);
+        $unique_code = 'SUP'. Carbon::now()->format('YmdHis') . rand(100,999);
         $supplier = Supplier::create([  
             'nama_supplier' => $request->nama_supplier,
-            'kode_supplier' => $request->kode_supplier,
+            'kode_supplier' => $request->kode_supplier ?? $unique_code,
             'kategori_material' => $request->kategori_material,
             'kontak' => $request->kontak,
             'alamat' => $request->alamat,
+            'status' => 'active',
         ]);
 
         return redirect()->route('supplier.index')->with('success', 'Supplier berhasil ditambahkan.');
@@ -89,6 +94,22 @@ class SupplierController extends Controller
         $supplier = Supplier::findOrFail($id);
         $supplier->delete();
         return redirect()->route('supplier.index')->with('success', 'Supplier berhasil dihapus.');
+    }
+
+    public function downloadTemplateImport()
+    {
+        $filePath = public_path('templates/TemplateSupplier.xlsx');
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'File template tidak ditemukan.');
+        }
+
+        return response()->download($filePath, 'TemplateSupplier.xlsx');
+    }
+
+    public function import(Request $request){
+        $data = $request->all();    
+        Excel::import(new SupplierImport(), $request->file('file'));
+        return redirect()->route('supplier.index')->with('success', 'Data supplier berhasil diimport.');
     }
 }
 ?>
