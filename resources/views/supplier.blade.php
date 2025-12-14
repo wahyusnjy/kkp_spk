@@ -9,6 +9,17 @@
             </button>
         </div>
         
+        <!-- Search Section -->
+        <div class="flex justify-end items-center mt-4">
+            <div class="relative w-full sm:w-80">
+                <input type="text" 
+                       id="searchSupplier"
+                       placeholder="Cari supplier..." 
+                       class="w-full bg-dark-400 border border-dark-200 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
+        </div>
+        
         <div class="mt-4">
             <x-table-list 
                 :data="$suppliers"
@@ -274,6 +285,24 @@
                 });
             }
         });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchSupplier');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const tableRows = document.querySelectorAll('table tbody tr');
+                
+                tableRows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        }
 
         // Debug: Log semua edit buttons
         console.log('Edit buttons found:', document.querySelectorAll('.edit-item-btn').length);

@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
+    // =========================== Supplier Section Report  =========================== 
     // Laporan Supplier
     public function suppliers(Request $request)
     {
@@ -192,7 +193,10 @@ class ReportController extends Controller
         
     }
 
-    // Laporan Assessments
+    // =========================== End Supplier Section Report  =========================== 
+
+    // =========================== Assessment Section Report  =========================== 
+    
     public function assessments(Request $request)
     {
         $status = $request->input('status', []);
@@ -267,6 +271,7 @@ class ReportController extends Controller
         
         return view('pages.evaluation.reports.assessment', compact('assessments', 'summary', 'yearList', 'materialList'));
     }
+     
 
     public function assessments_filter(Request $request)
     {
@@ -297,7 +302,7 @@ class ReportController extends Controller
         
         $queryString = !empty($queryParams) ? '?' . implode('&', $queryParams) : '';
         
-        return redirect()->route('reports.assessments') . $queryString;
+        return redirect()->route('reports.assessments', $queryString);
     }
 
     public function exportAssessments(Request $request)
@@ -390,20 +395,10 @@ class ReportController extends Controller
         }
     }
 
-    // Export PDF Supplier
-    public function exportSuppliersPDF()
-    {
-        $suppliers = Supplier::with('materials')->latest()->get();
-        $pdf = PDF::loadView('reports.exports.suppliers-pdf', compact('suppliers'));
-        return $pdf->download('laporan-supplier-' . date('Y-m-d') . '.pdf');
-    }
+    // =========================== Assessment Section Report  =========================== 
 
-    // Export Excel Supplier  
-    public function exportSuppliersExcel()
-    {
-        // Implement Excel export
-        return redirect()->back()->with('info', 'Export Excel dalam pengembangan');
-    }
+
+
 
     // Export PDF Results
     public function exportResultsPDF($id)

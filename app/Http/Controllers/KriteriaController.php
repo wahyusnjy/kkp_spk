@@ -10,12 +10,25 @@ class KriteriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $kriterias = Kriteria::paginate(10);
+        
+        $search = $request->input('search');
+
+        $query = Kriteria::query();
+
+        if(!empty($search)){
+            $query->where('nama_kriteria','like','%'.$search.'%');
+            $query->orWhere('keterangan','like','%'.$search.'%');
+            $query->orwhere('bobot','like','%'.$search.'%');
+            $query->orwhere('type','like','%'.$search.'%');
+        }
+    //    dd($query);
+        $kriterias = $query->paginate(10);
         return view('pages.master.kriteria.index', compact('kriterias'));
     }
 
+    
     public function create()
     {
         return view('pages.master.kriteria.create');

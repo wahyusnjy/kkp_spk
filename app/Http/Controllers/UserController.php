@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,12 +12,12 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(10);
-        return view('users', compact('users'));
+        return view('pages.master.users.index', compact('users'));
     }
 
     public function create()
     {
-        return view('users.create');
+        return view('pages.master.users.create');
     }
 
     public function store(Request $request)
@@ -24,7 +25,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:8',
             'role' => 'required|in:admin,manager'
         ]);
 
@@ -39,16 +40,17 @@ class UserController extends Controller
             ->with('success', 'User berhasil ditambahkan');
     }
 
-    public function edit(User $user)
+    public function edit($id)
     {
-        return view('users.edit', compact('user'));
+        $user = User::findOrFail($id);
+        return view('pages.master.users.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email',
             'role' => 'required|in:admin,manager'
         ]);
 
@@ -59,21 +61,28 @@ class UserController extends Controller
         ];
 
         if ($request->password) {
-            $request->validate(['password' => 'min:6|confirmed']);
+            $request->validate(['password' => 'min:8|confirmed']);
             $data['password'] = Hash::make($request->password);
         }
 
-        $user->update($data);
+        User::where('id',$id)->update($data);
 
         return redirect()->route('users.index')
             ->with('success', 'User berhasil diupdate');
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        $user->delete();
-        return redirect()->route('users.index')
-            ->with('success', 'User berhasil dihapus');
+        if(Auth::user()->id != $id) {
+            $user = User::findOrFail($id);
+            $user->delete();
+            return redirect()->route('users.index')
+                ->with('success', 'User berhasil dihapus');
+        }else {
+            return redirect()->route('users.index')
+            ->with('error','Gabisa hapus diri sendiri');
+        }
+        
     }
 
 }

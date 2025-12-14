@@ -55,7 +55,7 @@
         Route::get('/create', [UserController::class, 'create'])->name('users.create')->middleware(['auth', 'verified']);
         Route::post('/store', [UserController::class, 'store'])->name('users.store')->middleware(['auth', 'verified']);
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit')->middleware(['auth', 'verified']);
-        Route::post('/update/{id}', [UserController::class, 'post'])->name('users.post')->middleware(['auth', 'verified']);
+        Route::post('/update/{id}', [UserController::class, 'update'])->name('users.update')->middleware(['auth', 'verified']);
         Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy')->middleware(['auth', 'verified']);
     });
 

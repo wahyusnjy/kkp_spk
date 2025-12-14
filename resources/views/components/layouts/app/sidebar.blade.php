@@ -14,11 +14,11 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Dashboard')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                </flux:navlist.group>
+                </flux:navlist.group> 
                 
                 <flux:navlist.group :heading="__('Masters')" class="grid">
                     <flux:navlist.item icon="clipboard-document-list" :href="route('kriteria.index')" :current="request()->routeIs('kriteria.*')" wire:navigate>{{ __('Kriteria') }}</flux:navlist.item>
-                    <flux:navlist.item icon="circle-stack" :href="route('supplier.index')" :current="request()->routeIs('suppliers.*')" wire:navigate>{{ __('Supplier') }}</flux:navlist.item>
+                    <flux:navlist.item icon="circle-stack" :href="route('supplier.index')" :current="request()->routeIs('supplier.*')" wire:navigate>{{ __('Supplier') }}</flux:navlist.item>
                     <flux:navlist.item icon="square-3-stack-3d" :href="route('material.index')" :current="request()->routeIs('material.*')" wire:navigate>{{ __('Material') }}</flux:navlist.item>
                     <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
                 </flux:navlist.group>

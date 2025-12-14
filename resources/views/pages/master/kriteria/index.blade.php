@@ -1,12 +1,25 @@
 <x-layouts.app :title="__('Kriteria')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <!-- Header Section -->
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center gap-4">
             <x-title-header :title="__('Kriteria')" :base="__('Masters')"/>
-            <a href="{{ route('kriteria.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2">
-                <i class="fas fa-plus"></i>
-                <span>Tambah Kriteria</span>
-            </a>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <form action="{{ route('kriteria.index') }}" method="GET" id="searchForm">
+                        <input type="text" 
+                            id="searchKriteria"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Cari kriteria..." 
+                            class="w-full bg-dark-400 border border-dark-200 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                    </form>
+                </div>
+                <a href="{{ route('kriteria.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2">
+                    <i class="fas fa-plus"></i>
+                    <span>Tambah Kriteria</span>
+                </a>
+            </div>
         </div>
 
         <!-- Table Section -->
@@ -92,6 +105,14 @@
             }
         });
         // Debug: Log semua edit buttons
+
+        // Search functionality
+        const searchInput = document.getElementById('searchKriteria');
+        searchInput.addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                document.getElementById('searchForm').submit();
+            }
+        });
         console.log('Delete buttons found:', document.querySelectorAll('.delete-item-btn').length);
     });
 </script>

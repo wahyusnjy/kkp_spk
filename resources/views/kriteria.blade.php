@@ -3,10 +3,23 @@
         <!-- Header Section -->
         <div class="flex justify-between items-center">
             <x-title-header :title="__('Kriteria')" :base="__('Masters')"/>
+            
             <button id="createKriteriaBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2">
                 <i class="fas fa-plus"></i>
                 <span>Tambah Kriteria</span>
             </button>
+        </div>
+
+
+        <!-- Search Section -->
+        <div class="flex justify-end items-center mt-4">
+            <div class="relative w-full sm:w-80">
+                <input type="text" 
+                       id="searchKriteria"
+                       placeholder="Cari kriteria..." 
+                       class="w-full bg-dark-400 border border-dark-200 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
         </div>
 
         <!-- Table Section -->
@@ -237,6 +250,24 @@
                 });
             }
         });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchKriteria');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const tableRows = document.querySelectorAll('table tbody tr');
+                
+                tableRows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        }
 
         // Debug: Log semua edit buttons
         console.log('Edit buttons found:', document.querySelectorAll('.edit-item-btn').length);
