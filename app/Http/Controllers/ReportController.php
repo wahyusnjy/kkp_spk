@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exports\SupplierReportExport;
+use App\Models\Kriteria;
+use App\Models\Material;
 use App\Models\Supplier;
 use App\Models\Assessment;
+use App\Models\Topsis_Result;
 use App\Models\TopsisResult;
 use DB;
 use Illuminate\Http\Request;
@@ -470,7 +473,7 @@ class ReportController extends Controller
     public function exportResultsPDF($id)
     {
         $assessment = Assessment::with(['topsisResults.supplier'])->findOrFail($id);
-        $results = TopsisResult::with('supplier')
+        $results = Topsis_Result::with('supplier')
             ->where('assessment_id', $id)
             ->orderBy('rank')
             ->get();
