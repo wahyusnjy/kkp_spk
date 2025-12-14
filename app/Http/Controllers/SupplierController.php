@@ -14,9 +14,21 @@ class SupplierController extends Controller
     /**
      * Display a listing of the suppliers.
      */
-    public function index(): View
+    public function index(Request $request)
     {
-        $suppliers = Supplier::orderBy('id', 'desc')->paginate(15);
+        $search = $request->input('search');
+
+        $query = Supplier::query();
+        if(!empty($search)){
+            $query->where('kode_supplier','like','%'.$search.'%');
+            $query->orWhere('nama_supplier','like','%'.$search.'%');
+            $query->orwhere('alamat','like','%'.$search.'%');
+            $query->orwhere('kontak','like','%'.$search.'%');
+            $query->orwhere('kategori_material','like','%'.$search.'%');
+            $query->orwhere('status','like','%'.$search.'%');
+        }
+
+        $suppliers = $query->paginate(10);
         return view('pages.master.supplier.index', compact('suppliers'));
     }
 

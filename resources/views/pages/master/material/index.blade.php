@@ -3,12 +3,12 @@
             <x-title-header :title="__('Material')" :base="__('Masters')"/>
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2">
-                    <form action="{{ route('kriteria.index') }}" method="GET" id="searchForm">
+                    <form action="{{ route('material.index') }}" method="GET" id="searchForm">
                         <input type="text" 
-                            id="searchKriteria"
+                            id="searchMaterial"
                             name="search"
                             value="{{ request('search') }}"
-                        placeholder="Cari kriteria..." 
+                        placeholder="Cari Material..." 
                         class="w-full bg-dark-400 border border-dark-200 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
                         <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
                     </form>
@@ -195,7 +195,7 @@
             }
         });
 
-        const searchInput = document.getElementById('searchKriteria');
+        const searchInput = document.getElementById('searchMaterial');
         searchInput.addEventListener('keypress', function(e) {
             if(e.key === 'Enter') {
                 document.getElementById('searchForm').submit();

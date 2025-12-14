@@ -11,9 +11,9 @@
     use Illuminate\Support\Facades\Route;
     use Laravel\Fortify\Features;
     use Livewire\Volt\Volt;
-
+    // Redirect root to login
     Route::get('/', function () {
-        return view('welcome');
+        return redirect()->route('login');
     })->name('home');
 
     // Dashboard - Different for Admin vs Manager

@@ -216,7 +216,16 @@
                 });
             }
 
-            // Modal listener
+            // ====== Search Function =======
+            const searchInput = document.getElementById('searchKriteria');
+            searchInput.addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') {
+                    document.getElementById('searchForm').submit();
+                }
+            });
+
+
+            // ====== Modal listener =======
 
             if (e.target.closest('.open-modal')) {
                 const button = e.target.closest('.open-modal');

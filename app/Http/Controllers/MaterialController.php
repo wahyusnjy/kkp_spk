@@ -12,10 +12,25 @@ class MaterialController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {   
+        $search = $request->input('search');
+
+        $query = Material::query();
+        if(!empty($search)){
+            $query->where('supplier_id','like','%'.$search.'%');
+            $query->orWhere('nama_material','like','%'.$search.'%');
+            $query->orwhere('jenis_logam','like','%'.$search.'%');
+            $query->orwhere('grade','like','%'.$search.'%');
+            $query->orwhere('spesifikasi_teknis','like','%'.$search.'%');
+            $query->orwhere('harga_per_kg','like','%'.$search.'%');
+            $query->orWhereHas('supplier', function ($has) use ($search) {
+                $has->where('nama_supplier', 'like', '%' . $search . '%');
+            });
+        }
+
         $suppliers = Supplier::all();
-        $materials = Material::with('supplier')->orderBy('id','desc')->paginate(10);
+        $materials = $query->with('supplier')->orderBy('id','desc')->paginate(10);
         return view('pages.master.material.index', compact('materials','suppliers'));
     }
 
