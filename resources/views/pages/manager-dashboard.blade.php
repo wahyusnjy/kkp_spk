@@ -1,5 +1,6 @@
 <x-layouts.app>
-        <div class="max-w-9xl mx-auto">
+    <div class="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-6">
+        <div class="max-w-7xl mx-auto">
             {{-- Header --}}
             <div class="mb-8">
                 <h1 class="text-4xl font-bold text-white mb-2">
@@ -169,4 +170,5 @@
                 </div>
             </div>
         </div>
+    </div>
 </x-layouts.app>

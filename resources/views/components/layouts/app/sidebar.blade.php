@@ -16,35 +16,39 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group> 
                 
+                @if(auth()->user()->role === 'admin')
+                {{-- Masters - Only Admin --}}
                 <flux:navlist.group :heading="__('Masters')" class="grid">
                     <flux:navlist.item icon="clipboard-document-list" :href="route('kriteria.index')" :current="request()->routeIs('kriteria.*')" wire:navigate>{{ __('Kriteria') }}</flux:navlist.item>
                     <flux:navlist.item icon="circle-stack" :href="route('supplier.index')" :current="request()->routeIs('supplier.*')" wire:navigate>{{ __('Supplier') }}</flux:navlist.item>
                     <flux:navlist.item icon="square-3-stack-3d" :href="route('material.index')" :current="request()->routeIs('material.*')" wire:navigate>{{ __('Material') }}</flux:navlist.item>
                     <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
                 </flux:navlist.group>
+                @endif
                 
+                {{-- Evaluation - Both Roles --}}
                 <flux:navlist.group :heading="__('Evaluation')" class="grid">
                     <flux:navlist.item icon="clipboard-document-check" :href="route('assessments.index')" :current="request()->routeIs('assessments.*')" wire:navigate>{{ __('Assessments') }}</flux:navlist.item>
-                    <flux:navlist.item icon="chart-bar" :href="route('assessments.index')" :current="request()->routeIs('results.show')" wire:navigate>{{ __('Detail Calculation') }}</flux:navlist.item>
                 </flux:navlist.group>
                 
+                {{-- Reports - Both Roles --}}
                 <flux:navlist.group :heading="__('Reports')" class="grid">
                     <flux:navlist.item icon="document-chart-bar" :href="route('reports.suppliers')" :current="request()->routeIs('reports.suppliers')" wire:navigate>{{ __('Supplier Reports') }}</flux:navlist.item>
                     <flux:navlist.item icon="clipboard-document-list" :href="route('reports.assessments')" :current="request()->routeIs('reports.assessments')" wire:navigate>{{ __('Assessment Reports') }}</flux:navlist.item>
-                    <flux:navlist.item icon="arrow-down-tray" :href="route('reports.export.suppliers-excel')" :current="request()->routeIs('reports.export.*')" wire:navigate>{{ __('Export Reports') }}</flux:navlist.item>
+                    <flux:navlist.item icon="circle-stack" :href="route('reports.kriteria')" :current="request()->routeIs('reports.kriteria')" wire:navigate>{{ __('Kriteria Report') }}</flux:navlist.item>
+                    <flux:navlist.item icon="presentation-chart-line" :href="route('reports.executive-summary')" :current="request()->routeIs('reports.executive-summary')" wire:navigate>{{ __('Executive Summary') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
             <flux:spacer />
 
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
+                <form method="POST" action="{{ route('logout') }}" class="w-full">
+                    @csrf
+                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full" data-test="logout-button">
+                        {{ __('Log Out') }}
+                    </flux:menu.item>
+                </form>
             </flux:navlist>
 
             <!-- Desktop User Menu -->

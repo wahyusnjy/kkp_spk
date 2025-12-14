@@ -16,17 +16,19 @@
         return view('welcome');
     })->name('home');
 
+    // Dashboard - Different for Admin vs Manager
     Route::get('/dashboard',[DashboardController::class, 'index'])
         ->middleware(['auth', 'verified'])
         ->name('dashboard');
 
-    Route::prefix('kriteria')->group(function () {
-        Route::get('/', [KriteriaController::class, 'index'])->middleware(['auth', 'verified'])->name('kriteria.index');
-        Route::get('/create', [KriteriaController::class, 'create'])->middleware(['auth', 'verified'])->name('kriteria.create');
-        Route::post('/store', [KriteriaController::class, 'store'])->middleware(['auth'])->name('kriteria.store');
-        Route::get('/edit/{id}', [KriteriaController::class, 'edit'])->middleware(['auth', 'verified'])->name('kriteria.edit');
-        Route::post('/update/{id}', [KriteriaController::class, 'update'])->middleware(['auth', 'verified'])->name('kriteria.post');
-        Route::delete('/delete/{id}', [KriteriaController::class, 'destroy'])->middleware(['auth', 'verified'])->name('kriteria.destroy');
+    // 👤 MASTER DATA (Admin Only)
+    Route::prefix('kriteria')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/', [KriteriaController::class, 'index'])->name('kriteria.index');
+        Route::get('/create', [KriteriaController::class, 'create'])->name('kriteria.create');
+        Route::post('/store', [KriteriaController::class, 'store'])->name('kriteria.store');
+        Route::get('/edit/{id}', [KriteriaController::class, 'edit'])->name('kriteria.edit');
+        Route::post('/update/{id}', [KriteriaController::class, 'update'])->name('kriteria.post');
+        Route::delete('/delete/{id}', [KriteriaController::class, 'destroy'])->name('kriteria.destroy');
     });
 
     Route::prefix('suppliers')->group(function () {
@@ -110,7 +112,14 @@
             Route::get('/', [ReportController::class, 'assessments'])->name('reports.assessments');
             Route::get('/filter', [ReportController::class,'assessments_filter'])->name('reports.assessments.filter');
             Route::get('/export', [ReportController::class, 'exportAssessments'])->name('reports.export.assessments');
+            Route::get('/{assessmentId}/export-detailed', [ReportController::class, 'exportDetailedAssessment'])->name('reports.export.assessment.detailed');
         });
+        
+        // Laporan Kriteria
+        Route::get('/kriteria', [ReportController::class, 'kriteriaReport'])->name('reports.kriteria');
+        
+        // Executive Summary
+        Route::get('/executive-summary', [ReportController::class, 'executiveSummary'])->name('reports.executive-summary');
         
         // Export Excel/PDF
         Route::get('/export/suppliers-pdf', [ReportController::class, 'exportSuppliersPDF'])->name('reports.export.suppliers-pdf');

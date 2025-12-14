@@ -19,6 +19,12 @@
                     <i class="fas fa-plus"></i>
                     <span>Tambah Kriteria</span>
                 </a>
+                <button type="button" 
+                    data-modal-target="importModal" 
+                    class="open-modal bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2">
+                    <i class="fas fa-file-import"></i>
+                    <span>Import Supplier</span>
+                </button>
             </div>
         </div>
 

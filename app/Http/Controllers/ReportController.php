@@ -395,9 +395,75 @@ class ReportController extends Controller
         }
     }
 
-    // =========================== Assessment Section Report  =========================== 
-
-
+    // ================== END Assessment Section Report ==================
+    
+    /**
+     * Export detailed assessment report with TOPSIS calculations
+     */
+    public function exportDetailedAssessment(Request $request, $assessmentId)
+    {
+        $format = $request->input('format', 'pdf');
+        
+        // Load assessment with all relationships
+        $assessment = Assessment::with([
+            'material',
+            'scores.supplier',
+            'scores.kriteria',
+            'topsisResults.supplier'
+        ])->findOrFail($assessmentId);
+        
+        // Get TOPSIS calculation steps if completed
+        $calculationSteps = null;
+        if ($assessment->topsisResults->count() > 0) {
+            $topsisService = new \App\Services\TopsisService();
+            $calculationSteps = $topsisService->getCalculationSteps($assessmentId);
+        }
+        
+        // Group scores by supplier
+        $scoresBySupplier = $assessment->scores->groupBy('supplier_id');
+        
+        // Statistics
+        $statistics = [
+            'total_suppliers' => $scoresBySupplier->count(),
+            'total_criteria' => $assessment->scores->groupBy('kriteria_id')->count(),
+            'total_score' => $assessment->scores->sum('score'),
+            'average_score' => $assessment->scores->avg('score') ?? 0,
+            'max_score' => $assessment->scores->max('score') ?? 0,
+            'min_score' => $assessment->scores->min('score') ?? 0,
+        ];
+        
+        $filename = 'laporan-detail-assessment-' . $assessment->id . '-' . date('Y-m-d-His');
+        
+        if ($format === 'pdf') {
+            $filename .= '.pdf';
+            
+            $data = [
+                'assessment' => $assessment,
+                'scoresBySupplier' => $scoresBySupplier,
+                'statistics' => $statistics,
+                'calculationSteps' => $calculationSteps,
+                'exportDate' => now(),
+            ];
+            
+            $pdf = PDF::loadView('exports.assessment-detailed-pdf', $data)
+                ->setPaper('a4', 'landscape');
+            
+            return $pdf->download($filename);
+            
+        } else {
+            $filename .= '.xlsx';
+            
+            return Excel::download(
+                new \App\Exports\DetailedAssessmentExport(
+                    $assessment,
+                    $scoresBySupplier,
+                    $statistics,
+                    $calculationSteps
+                ),
+                $filename
+            );
+        }
+    }
 
 
     // Export PDF Results
@@ -418,5 +484,175 @@ class ReportController extends Controller
     {
         // Implement Excel export
         return redirect()->back()->with('info', 'Export Excel dalam pengembangan');
+    }
+    
+    /**
+     * Laporan Kriteria Lengkap
+     */
+    public function kriteriaReport(Request $request)
+    {
+        $format = $request->input('format');
+        
+        // If no format, show the page
+        if (!$format) {
+            return view('pages.reports.kriteria');
+        }
+        
+        // Get all criteria with usage statistics
+        $kriterias = Kriteria::all()->map(function($kriteria) {
+            // Count usage in assessments
+            $usageCount = DB::table('assessment_scores')
+                ->where('kriteria_id', $kriteria->id)
+                ->distinct('assessment_id')
+                ->count('assessment_id');
+            
+            // Get average score
+            $avgScore = DB::table('assessment_scores')
+                ->where('kriteria_id', $kriteria->id)
+                ->avg('score');
+            
+            // Get score range
+            $maxScore = DB::table('assessment_scores')
+                ->where('kriteria_id', $kriteria->id)
+                ->max('score');
+            
+            $minScore = DB::table('assessment_scores')
+                ->where('kriteria_id', $kriteria->id)
+                ->min('score');
+            
+            $kriteria->usage_count = $usageCount;
+            $kriteria->avg_score = $avgScore ?? 0;
+            $kriteria->max_score = $maxScore ?? 0;
+            $kriteria->min_score = $minScore ?? 0;
+            
+            return $kriteria;
+        });
+        
+        // Summary statistics
+        $summary = [
+            'total_kriteria' => $kriterias->count(),
+            'benefit_count' => $kriterias->where('type', 'benefit')->count(),
+            'cost_count' => $kriterias->where('type', 'cost')->count(),
+            'total_weight' => $kriterias->sum('bobot'),
+            'avg_weight' => $kriterias->avg('bobot'),
+            'most_used' => $kriterias->sortByDesc('usage_count')->first(),
+        ];
+        
+        $filename = 'laporan-kriteria-' . date('Y-m-d-His');
+        
+        if ($format === 'pdf') {
+            $filename .= '.pdf';
+            
+            $data = [
+                'kriterias' => $kriterias,
+                'summary' => $summary,
+                'exportDate' => now(),
+            ];
+            
+            $pdf = PDF::loadView('exports.kriteria-report-pdf', $data);
+            return $pdf->download($filename);
+            
+        } else {
+            $filename .= '.xlsx';
+            
+            return Excel::download(
+                new \App\Exports\KriteriaReportExport($kriterias, $summary),
+                $filename
+            );
+        }
+    }
+    
+    /**
+     * Executive Summary Report
+     */
+    public function executiveSummary(Request $request)
+    {
+        $format = $request->input('format');
+        
+        // If no format, show the page
+        if (!$format) {
+            return view('pages.reports.executive-summary');
+        }
+        
+        // Collect comprehensive statistics
+        $summary = [
+            // Assessment stats
+            'total_assessments' => Assessment::count(),
+            'completed_assessments' => Assessment::whereHas('topsisResults')->count(),
+            'in_progress_assessments' => Assessment::whereHas('scores')
+                ->whereDoesntHave('topsisResults')->count(),
+            'draft_assessments' => Assessment::whereDoesntHave('scores')->count(),
+            
+            // Supplier stats
+            'total_suppliers' => Supplier::count(),
+            'active_suppliers' => DB::table('assessment_scores')
+                ->distinct('supplier_id')
+                ->count('supplier_id'),
+            'top_supplier' => $this->getTopSupplier(),
+            
+            // Kriteria stats
+            'total_kriteria' => Kriteria::count(),
+            'benefit_kriteria' => Kriteria::where('type', 'benefit')->count(),
+            'cost_kriteria' => Kriteria::where('type', 'cost')->count(),
+            
+            // Material stats
+            'total_materials' => Material::count(),
+            'materials_assessed' => DB::table('assessments')
+                ->distinct('material_id')
+                ->count('material_id'),
+            
+            // Recent activity
+            'recent_assessments' => Assessment::with(['material', 'topsisResults.supplier'])
+                ->orderBy('created_at', 'desc')
+                ->take(5)
+                ->get(),
+            
+            'recent_winners' => Topsis_Result::with(['supplier', 'assessment.material'])
+                ->where('rank', 1)
+                ->orderBy('created_at', 'desc')
+                ->take(5)
+                ->get(),
+        ];
+        
+        $filename = 'executive-summary-' . date('Y-m-d-His');
+        
+        if ($format === 'pdf') {
+            $filename .= '.pdf';
+            
+            $data = [
+                'summary' => $summary,
+                'exportDate' => now(),
+            ];
+            
+            $pdf = PDF::loadView('exports.executive-summary-pdf', $data);
+            return $pdf->download($filename);
+            
+        } else {
+            $filename .= '.xlsx';
+            
+            return Excel::download(
+                new \App\Exports\ExecutiveSummaryExport($summary),
+                $filename
+            );
+        }
+    }
+    
+    private function getTopSupplier()
+    {
+        $topSupplier = Topsis_Result::select('supplier_id', DB::raw('COUNT(*) as win_count'))
+            ->where('rank', 1)
+            ->groupBy('supplier_id')
+            ->orderByDesc('win_count')
+            ->first();
+        
+        if ($topSupplier) {
+            $supplier = Supplier::find($topSupplier->supplier_id);
+            return [
+                'supplier' => $supplier,
+                'win_count' => $topSupplier->win_count,
+            ];
+        }
+        
+        return null;
     }
 }

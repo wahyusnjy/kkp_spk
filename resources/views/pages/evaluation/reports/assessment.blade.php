@@ -132,11 +132,12 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Pemenang</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Dibuat</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Detail</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-700">
                         @forelse($assessments as $assessment)
-                        <tr class="hover:bg-gray-700/50 transition duration-150">
+                        <tr class="hover:bg-gray-700/50 transition duration-150" data-assessment-id="{{ $assessment->id }}">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-blue-900/50 flex items-center justify-center mr-3 border border-blue-700/30">
@@ -207,10 +208,203 @@
                                     {{ \Carbon\Carbon::parse($assessment->created_at)->format('H:i') }}
                                 </div>
                             </td>
+                            <td class="px-6 py-4">
+                                <button onclick="toggleDetail({{ $assessment->id }})" 
+                                        class="text-blue-400 hover:text-blue-300 transition">
+                                    <i class="fas fa-chevron-down toggle-icon" id="icon-{{ $assessment->id }}"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Detail Row -->
+                        <tr class="detail-row hidden" id="detail-{{ $assessment->id }}">
+                            <td colspan="8" class="px-0 py-0">
+                                <div class="bg-gray-900/50 p-6 border-t border-gray-700">
+                                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+                                        <!-- Basic Info -->
+                                        <div class="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                                            <h4 class="text-white font-semibold mb-3 flex items-center gap-2">
+                                                <i class="fas fa-info-circle text-blue-400"></i>
+                                                Informasi
+                                            </h4>
+                                            <div class="space-y-2 text-sm">
+                                                <div>
+                                                    <span class="text-gray-400">Material:</span>
+                                                    <span class="text-white ml-2">{{ $assessment->material->nama_material }}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-gray-400">Tahun:</span>
+                                                    <span class="text-white ml-2">{{ $assessment->tahun }}</span>
+                                                </div>
+                                                @if($assessment->deskripsi)
+                                                <div>
+                                                    <span class="text-gray-400">Deskripsi:</span>
+                                                    <p class="text-gray-300 mt-1 text-xs">{{ $assessment->deskripsi }}</p>
+                                                </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Statistics -->
+                                        <div class="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                                            <h4 class="text-white font-semibold mb-3 flex items-center gap-2">
+                                                <i class="fas fa-chart-bar text-green-400"></i>
+                                                Statistik
+                                            </h4>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <div class="bg-gray-700/50 rounded p-2">
+                                                    <div class="text-xs text-gray-400">Supplier</div>
+                                                    <div class="text-lg font-bold text-white">{{ $assessment->supplier_count }}</div>
+                                                </div>
+                                                <div class="bg-gray-700/50 rounded p-2">
+                                                    <div class="text-xs text-gray-400">Kriteria</div>
+                                                    <div class="text-lg font-bold text-white">{{ $assessment->scores->groupBy('kriteria_id')->count() }}</div>
+                                                </div>
+                                                <div class="bg-gray-700/50 rounded p-2">
+                                                    <div class="text-xs text-gray-400">Total Nilai</div>
+                                                    <div class="text-lg font-bold text-white">{{ number_format($assessment->scores->sum('score'), 0) }}</div>
+                                                </div>
+                                                <div class="bg-gray-700/50 rounded p-2">
+                                                    <div class="text-xs text-gray-400">Rata-rata</div>
+                                                    <div class="text-lg font-bold text-white">{{ number_format($assessment->scores->avg('score') ?? 0, 1) }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- TOPSIS Results (if any) -->
+                                        @if($assessment->topsisResults->count() > 0)
+                                        <div class="bg-gray-800 rounded-xl p-4 border border-gray-700 lg:col-span-2">
+                                            <h4 class="text-white font-semibold mb-3 flex items-center gap-2">
+                                                <i class="fas fa-trophy text-yellow-400"></i>
+                                                Top 3 Hasil TOPSIS
+                                            </h4>
+                                            <div class="space-y-2">
+                                                @foreach($assessment->topsisResults()->orderBy('rank')->take(3)->get() as $result)
+                                                <div class="flex items-center justify-between bg-gray-700/50 rounded p-2">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-8 h-8 {{ $result->rank == 1 ? 'bg-yellow-600' : 'bg-gray-600' }} rounded-lg flex items-center justify-center">
+                                                            <span class="text-white font-bold text-sm">#{{ $result->rank }}</span>
+                                                        </div>
+                                                        <div>
+                                                            <div class="text-white font-medium text-sm">{{ $result->supplier->nama_supplier }}</div>
+                                                            <div class="text-xs text-gray-400">{{ number_format($result->preference_score * 100, 2) }}%</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="w-24 bg-gray-600 rounded-full h-2">
+                                                        <div class="bg-green-500 h-2 rounded-full" style="width: {{ $result->preference_score * 100 }}%"></div>
+                                                    </div>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @else
+                                        <div class="bg-gray-800 rounded-xl p-4 border border-gray-700 lg:col-span-2">
+                                            <div class="text-center py-4">
+                                                <i class="fas fa-calculator text-gray-600 text-3xl mb-2"></i>
+                                                <p class="text-gray-400 text-sm">Belum ada hasil TOPSIS</p>
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </div>
+                                    
+                                    <!-- Export Detailed Report Button -->
+                                    <div class="bg-gradient-to-r from-green-900/30 to-blue-900/30 rounded-xl p-4 border border-green-700/30 mb-6">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-file-download text-white text-xl"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-white font-semibold">Export Laporan Detail</h4>
+                                                    <p class="text-gray-400 text-xs">Download laporan lengkap dengan perhitungan TOPSIS</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <button onclick="exportDetailed({{ $assessment->id }}, 'pdf')" 
+                                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2">
+                                                    <i class="fas fa-file-pdf"></i>
+                                                    <span class="text-sm">PDF</span>
+                                                </button>
+                                                <button onclick="exportDetailed({{ $assessment->id }}, 'excel')" 
+                                                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2">
+                                                    <i class="fas fa-file-excel"></i>
+                                                    <span class="text-sm">Excel</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Supplier Scores Details -->
+                                    @if($assessment->scores->count() > 0)
+                                    <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+                                        <div class="px-4 py-3 bg-gray-700/50 border-b border-gray-700">
+                                            <h4 class="text-white font-semibold flex items-center gap-2">
+                                                <i class="fas fa-users text-purple-400"></i>
+                                                Detail Penilaian Supplier
+                                            </h4>
+                                        </div>
+                                        <div class="p-4 max-h-96 overflow-y-auto">
+                                            @php
+                                                $scoresBySupplier = $assessment->scores->groupBy('supplier_id');
+                                            @endphp
+                                            <div class="space-y-4">
+                                                @foreach($scoresBySupplier as $supplierId => $scores)
+                                                @php
+                                                    $supplier = $scores->first()->supplier;
+                                                    $totalScore = $scores->sum('score');
+                                                    $averageScore = $scores->avg('score');
+                                                @endphp
+                                                <div class="bg-gray-700/30 rounded-lg border border-gray-700 overflow-hidden">
+                                                    <div class="px-4 py-2 bg-gray-700/50 flex justify-between items-center">
+                                                        <div class="flex items-center gap-2">
+                                                            <i class="fas fa-building text-blue-400"></i>
+                                                            <span class="text-white font-medium">{{ $supplier->nama_supplier }}</span>
+                                                        </div>
+                                                        <div class="flex items-center gap-4 text-sm">
+                                                            <div>
+                                                                <span class="text-gray-400">Total:</span>
+                                                                <span class="text-white font-semibold">{{ number_format($totalScore, 1) }}</span>
+                                                            </div>
+                                                            <div>
+                                                                <span class="text-gray-400">Avg:</span>
+                                                                <span class="text-white font-semibold">{{ number_format($averageScore, 1) }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-3">
+                                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+                                                            @foreach($scores as $score)
+                                                            <div class="bg-gray-800 rounded p-2 border border-gray-600">
+                                                                <div class="text-xs text-gray-400 mb-1">{{ $score->kriteria->nama_kriteria }}</div>
+                                                                <div class="flex items-center justify-between">
+                                                                    <span class="text-white font-semibold">{{ number_format($score->score, 1) }}</span>
+                                                                    <span class="text-xs px-2 py-0.5 rounded {{ $score->kriteria->type == 'benefit' ? 'bg-green-900/30 text-green-400' : 'bg-red-900/30 text-red-400' }}">
+                                                                        {{ $score->kriteria->type == 'benefit' ? 'B' : 'C' }}
+                                                                    </span>
+                                                                </div>
+                                                                <div class="w-full bg-gray-600 rounded-full h-1 mt-1">
+                                                                    <div class="bg-blue-500 h-1 rounded-full" style="width: {{ $score->score }}%"></div>
+                                                                </div>
+                                                            </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @else
+                                    <div class="bg-gray-800 rounded-xl border border-gray-700 p-8 text-center">
+                                        <i class="fas fa-star text-gray-600 text-4xl mb-3"></i>
+                                        <p class="text-gray-400">Belum ada penilaian untuk assessment ini</p>
+                                    </div>
+                                    @endif
+                                </div>
+                            </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-12 text-center">
+                            <td colspan="8" class="px-6 py-12 text-center">
                                 <div class="flex flex-col items-center justify-center">
                                     <div class="w-16 h-16 rounded-full bg-gray-900 flex items-center justify-center mb-4 border border-gray-700">
                                         <i class="fas fa-inbox text-gray-500 text-2xl"></i>
@@ -646,6 +840,49 @@
             }
         });
     });
+    
+    // Toggle detail function
+    function toggleDetail(assessmentId) {
+        const detailRow = document.getElementById(`detail-${assessmentId}`);
+        const icon = document.getElementById(`icon-${assessmentId}`);
+        
+        if (detailRow.classList.contains('hidden')) {
+            detailRow.classList.remove('hidden');
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+            // Smooth scroll to detail
+            setTimeout(() => {
+                detailRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        } else {
+            detailRow.classList.add('hidden');
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        }
+    }
+    
+    // Export detailed assessment function
+    function exportDetailed(assessmentId, format) {
+        Swal.fire({
+            title: 'Menyiapkan Laporan Detail',
+            text: `Membuat file ${format.toUpperCase()} dengan perhitungan TOPSIS lengkap...`,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            background: '#1f2937',
+            color: '#fff',
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        // Redirect to export URL
+        window.location.href = `/reports/assessments/${assessmentId}/export-detailed?format=${format}`;
+        
+        // Close after a delay
+        setTimeout(() => {
+            Swal.close();
+        }, 2000);
+    }
 </script>
 
 <style>
@@ -678,6 +915,26 @@
     
     tbody tr:hover {
         z-index: 10;
+    }
+    
+    /* Detail row animation */
+    .detail-row td > div {
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .toggle-icon {
+        transition: transform 0.3s ease;
     }
     
     /* Print Styles */
