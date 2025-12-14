@@ -1,526 +1,630 @@
-# SPK TOPSIS - Sistem Pendukung Keputusan Pemilihan Supplier
+# 📊 SPK TOPSIS - Sistem Pendukung Keputusan Pemilihan Supplier
 
-## Gambaran Umum
+![Laravel](https://img.shields.io/badge/Laravel-11.x-red?logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.1+-blue?logo=php)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
 
-Sistem pendukung keputusan berbasis web yang mengimplementasikan metode TOPSIS untuk pemilihan dan perankingan supplier.
+## 🎯 Gambaran Umum
 
-## Fitur Utama
+Sistem Pendukung Keputusan berbasis web yang mengimplementasikan **metode TOPSIS** (Technique for Order of Preference by Similarity to Ideal Solution) untuk pemilihan dan perankingan supplier secara objektif dan sistematis.
 
- Manajemen Data Supplier - CRUD untuk data supplier
+Aplikasi ini dirancang untuk membantu perusahaan dalam mengambil keputusan pemilihan supplier berdasarkan multiple criteria dengan perhitungan matematis yang akurat.
 
- Manajemen Kriteria - Parameter penilaian dengan bobot
+---
 
- Manajemen Material - Data material untuk penilaian
+## ✨ Fitur Utama
 
- Sistem Assessment - Buat dan kelola penilaian supplier
+### 📋 Master Data Management
+- **Manajemen Kriteria** - Parameter penilaian dengan bobot & tipe (Benefit/Cost)
+- **Manajemen Supplier** - CRUD data supplier dengan import Excel
+- **Manajemen Material** - Data material/produk untuk penilaian
+- **Manajemen User** - Multi-user dengan role-based access (Admin & Manager)
 
- Perhitungan TOPSIS - Perankingan otomatis menggunakan algoritma TOPSIS
+### 🔍 Assessment & Evaluation
+- **Sistem Assessment** - Buat dan kelola penilaian supplier
+- **Input Nilai Dinamis** - Form interaktif untuk input nilai per kriteria
+- **Multi-Supplier Evaluation** - Nilai multiple supplier dalam satu assessment
+- **Auto-save Draft** - Simpan progress secara otomatis
 
- Visualisasi Hasil - Langkah perhitungan detail dan hasil
+### 🧮 TOPSIS Calculation
+- **Perhitungan Otomatis** - 7 langkah TOPSIS calculation
+- **Detail Calculation Steps** - Tampilkan semua matriks perantara
+- **Real-time Ranking** - Update ranking supplier secara otomatis
+- **Validation & Error Handling** - Validasi input & error messages yang jelas
 
- Generate Laporan - Export ke Excel dan PDF
+### 📈 Reports & Analytics
+- **Supplier Reports** - Laporan comprehensive data supplier
+- **Assessment Reports** - Filter & export hasil penilaian
+- **Detail Assessment Report** - Laporan lengkap dengan perhitungan TOPSIS (PDF & Excel)
+- **Kriteria Report** - Statistik penggunaan kriteria
+- **Executive Summary** - Dashboard-style report untuk management
+- **Multiple Export Formats** - PDF (landscape/portrait) & Excel (multi-sheet)
 
- Manajemen Pengguna - Sistem multi-user dengan autentikasi
+### 👥 User Management & Access Control
+- **Role-Based Access** - Admin (Full Access) & Manager (Read-Only + Reports)
+- **Custom Dashboard** - Dashboard berbeda untuk setiap role
+- **Menu Restrictions** - Menu dinamis berdasarkan role
+- **Secure Authentication** - Laravel Fortify dengan 2FA support
 
- Dashboard - Ringkasan statistik sistem
+### 🎨 User Interface
+- **Modern Dark Theme** - Professional dark UI dengan gradients
+- **Responsive Design** - Mobile-friendly interface
+- **Interactive Components** - Dynamic forms, modals, tooltips
+- **Real-time Search** - Server-side search di semua master data
+- **Loading States** - Skeleton loaders & progress indicators
+- **Toast Notifications** - SweetAlert2 untuk feedback
 
-## Instalasi Cepat
+---
+
+## 🚀 Instalasi Cepat
 
 ### Prasyarat
 
- PHP 8.1+
-
- Composer
-
- MySQL 5.7+
-
- Node.js 16+
+Pastikan sistem Anda memiliki:
+- **PHP** 8.1 atau lebih tinggi
+- **Composer** 2.x
+- **MySQL** 5.7+ atau MariaDB
+- **Node.js** 16+ & NPM
+- **Git**
 
 ### Langkah Instalasi
 
-1. Clone repository
+```bash
+# 1. Clone repository
+git clone https://github.com/wahyusnjy/kkp_spk.git
+cd kkp_spk
 
-2. Install dependencies dengan Composer dan NPM
+# 2. Install PHP dependencies
+composer install
 
-3. Konfigurasi environment
+# 3. Install JavaScript dependencies
+npm install
 
-4. Setup database di file .env
+# 4. Copy environment file
+cp .env.example .env
+
+# 5. Generate application key
+php artisan key:generate
 
-5. Jalankan migrasi database
+# 6. Configure database di file .env
+# Edit DB_DATABASE, DB_USERNAME, DB_PASSWORD
 
-6. Start server development
+# 7. Run migrations & seeders
+php artisan migrate --seed
 
-### Kredensial Default
+# 8. Create storage link
+php artisan storage:link
 
- Email: admin@example.com
+# 9. Build assets
+npm run build
 
- Password: password
+# 10. Start development server
+php artisan serve
+# Dan di terminal terpisah:
+npm run dev
+```
 
-## Skema Database
+### 🔐 Kredensial Default
 
-### Tabel Utama
+Setelah seeding, gunakan kredensial berikut:
 
- users - Pengguna sistem
+#### Admin Account:
+- **Email:** `admin@example.com`
+- **Password:** `password`
+- **Role:** Admin (Full Access)
 
- kriteria - Kriteria penilaian
+#### Manager Account:
+- **Email:** `manager@example.com`
+- **Password:** `password`
+- **Role:** Manager (Read-Only + Reports)
 
- suppliers - Data supplier
+> ⚠️ **PENTING:** Ubah password default setelah login pertama!
 
- materials - Data material
+---
 
- assessments - Header penilaian
+## 📊 Alur Kerja Aplikasi
 
- assessment_scores - Nilai per kriteria
+### 1️⃣ Setup Awal (Admin Only)
 
- topsis_results - Hasil perhitungan TOPSIS
+```
+┌─────────────────┐
+│  Setup Kriteria │ → Tambah kriteria penilaian dengan:
+└─────────────────┘   • Nama kriteria
+                       • Bobot (total harus 1.0)
+                       • Tipe (Benefit/Cost)
+                       • Keterangan
 
-## Alur Aplikasi
+┌─────────────────┐
+│  Setup Supplier │ → Daftarkan supplier dengan:
+└─────────────────┘   • Kode & nama supplier
+                       • Alamat & kontak
+                       • Kategori material
+                       • Status (Aktif/Nonaktif)
 
-### 1. Fase Setup
+┌─────────────────┐
+│ Setup Material  │ → Definisikan material:
+└─────────────────┘   • Nama material
+                       • Jenis logam & grade
+                       • Spesifikasi teknis
+                       • Harga per kg
+```
 
-1. Tambah kriteria dengan bobot dan jenis (benefit/cost)
+### 2️⃣ Proses Assessment (Admin Only)
 
-2. Daftarkan supplier dengan informasi kontak
+```
+┌────────────────────┐
+│ Buat Assessment    │ → Pilih material & tahun
+└────────────────────┘   Tambahkan deskripsi
 
-3. Definisikan material untuk evaluasi
+┌────────────────────┐
+│ Pilih Supplier     │ → Tentukan supplier yang akan dinilai
+└────────────────────┘   (minimal 2 supplier)
 
-### 2. Fase Assessment
+┌────────────────────┐
+│ Input Nilai        │ → Beri nilai untuk setiap kriteria
+└────────────────────┘   Scale: 0-100
 
-1. Buat assessment baru untuk material tertentu
+┌────────────────────┐
+│ Hitung TOPSIS      │ → Jalankan perhitungan otomatis
+└────────────────────┘   Lihat ranking hasil
+```
 
-2. Pilih supplier untuk dinilai
-
-3. Input nilai untuk setiap kriteria (0-100)
-
-4. Simpan atau submit assessment
-
-### 3. Fase Perhitungan
-
-1. Jalankan perhitungan TOPSIS dari detail assessment
-
-2. Sistem memproses:
-
- Pembuatan matriks keputusan
-
- Normalisasi
-
- Normalisasi terbobot
-
- Penentuan solusi ideal
-
- Perhitungan jarak
-
- Perhitungan nilai preferensi
-
-3. Lihat hasil ranking
-
-### 4. Fase Analisis
-
-1. Review ranking supplier
-
-2. Lihat detail langkah perhitungan
-
-3. Export hasil ke Excel/PDF
-
-4. Buat keputusan pengadaan
-
-## Endpoint API
-
-### Autentikasi & Manajemen User
-
- /dashboard - Dashboard
-
- /settings/profile - Profil user
-
- /settings/password - Ganti password
-
- /settings/two-factor - Pengaturan 2FA
-
-### Manajemen Data Master
-
-**Kriteria:**
-
- GET /kriteria - List kriteria
-
- POST /kriteria/store - Simpan kriteria
-
- DELETE /kriteria/delete/{id} - Hapus kriteria
-
-**Supplier:**
-
- GET /suppliers - List supplier
-
- POST /suppliers/store - Simpan supplier
-
- DELETE /suppliers/delete/{id} - Hapus supplier
-
-**Material:**
-
- GET /materials - List material
-
- POST /materials/store - Simpan material
-
- DELETE /materials/delete/{id} - Hapus material
-
-**Users:**
-
- GET /users - List users
-
- POST /users/store - Simpan user
-
- DELETE /users/delete/{id} - Hapus user
-
-### Sistem Assessment
-
-**Assessments:**
-
- GET /assessments - List assessments
-
- POST /assessments/store - Simpan assessment
-
- GET /assessments/{id} - Show assessment
-
- POST /assessments/update/{id} - Update assessment
-
-**Score Management:**
-
- GET /assessments/{id}/scores - Form input nilai
-
- POST /assessments/{id}/scores/save - Simpan nilai
-
-**TOPSIS Calculation:**
-
- POST /assessments/{id}/calculate - Jalankan perhitungan TOPSIS
-
-### Results & Reports
-
-**TOPSIS Results:**
-
- GET /results - Semua hasil
-
- GET /results/{id} - Hasil spesifik
-
- GET /results/{id}/export - Export hasil
-
-**Detailed Calculations:**
-
- GET /results/{id}/supplier/{supplier}/calculation - Perhitungan per supplier
-
-**Reports:**
-
- GET /reports/suppliers - Laporan supplier
-
- GET /reports/assessments - Laporan assessments
-
- GET /reports/export/suppliers-pdf - Export suppliers PDF
-
- GET /reports/export/suppliers-excel - Export suppliers Excel
-
-**History:**
-
- GET /history/{assessment_id?} - Histori analisis
-
-## Algoritma TOPSIS
+### 3️⃣ Analisis & Reporting (Admin & Manager)
+
+```
+┌────────────────────┐
+│ Lihat Hasil        │ → Review ranking supplier
+└────────────────────┘   Lihat detail perhitungan
+
+┌────────────────────┐
+│ Export Report      │ → Download laporan:
+└────────────────────┘   • Detailed Assessment (PDF/Excel)
+                          • Executive Summary
+                          • Kriteria Report
+                          • Supplier Report
+```
+
+---
+
+## 🧮 Metode TOPSIS
 
 ### Langkah Perhitungan
 
-1. Matriks Keputusan (X)
+Sistem mengimplementasikan 7 langkah TOPSIS:
 
-X = \[x_ij\] dimana i = supplier, j = kriteria
-
-2. Matriks Ternormalisasi (R)
-
-r_ij = x_ij / sqrt(∑(x_ij)²)
-
-3. Matriks Ternormalisasi Terbobot (V)
-
-v_ij = w_j * r_ij
-
-dimana w_j = bobot kriteria
-
-4. Solusi Ideal
-
-A+ = {max(v_ij) jika benefit, min(v_ij) jika cost}
-
-A- = {min(v_ij) jika benefit, max(v_ij) jika cost}
-
-5. Ukuran Pemisahan
-
-D+_i = sqrt(∑(v_ij - A+_j)²)
-
-D-_i = sqrt(∑(v_ij - A-_j)²)
-
-6. Kedekatan Relatif
-
-C_i = D-_i / (D+_i + D-_i)
-
-7. Ranking
-
-Ranking supplier berdasarkan C_i (lebih tinggi lebih baik)
-
-## Komponen UI
-
-### Fitur Form
-
- Form multi-step untuk pembuatan assessment
-
- Validasi real-time dengan feedback visual
-
- Fungsi auto-save draft
-
- Penambahan/penghapusan field dinamis
-
- Indikator progress
-
-### Display Data
-
- Tabel responsif dengan sorting
-
- Progress bars untuk nilai
-
- Badge status dengan warna
-
- Modal windows untuk detail
-
-### User Interface
-
- Tema dark secara default
-
- Layout berbasis card
-
- Navigasi sidebar
-
- Notifikasi toast
-
- Loading states
-
-## Fitur Keamanan
-
-### Autentikasi
-
- Implementasi Laravel Fortify
-
- Autentikasi email/password
-
- Opsional two-factor authentication
-
- Konfirmasi password untuk aksi sensitif
-
-### Authorisasi
-
- Proteksi middleware pada routes
-
- Proteksi CSRF token
-
- Pencegahan XSS melalui Blade templating
-
- Pencegahan SQL injection via Eloquent ORM
-
-### Proteksi Data
-
- Hashing password dengan bcrypt
-
- Manajemen session yang aman
-
- Validasi dan sanitasi input
-
- Keamanan file upload
-
-## Struktur Proyek
-
+#### 1️⃣ Matriks Keputusan (Decision Matrix)
 ```
-spk-topsis/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/          # All controllers
-│   │   │   ├── AssessmentController.php
-│   │   │   ├── KriteriaController.php
-│   │   │   ├── SupplierController.php
-│   │   │   ├── MaterialController.php
-│   │   │   ├── TopsisResultController.php
-│   │   │   ├── UserController.php
-│   │   │   ├── ReportController.php
-│   │   │   └── DashboardController.php
-│   │   └── Services/
-│   │       └── TopsisService.php # TOPSIS calculation service
-│   ├── Models/                   # Eloquent models
-│   │   ├── User.php
-│   │   ├── Kriteria.php
-│   │   ├── Supplier.php
-│   │   ├── Material.php
-│   │   ├── Assessment.php
-│   │   ├── AssessmentScore.php
-│   │   └── Topsis_Result.php
-│   └── View/Components/          # Blade components
-├── database/
-│   ├── migrations/               # Database migrations
-│   └── seeders/                  # Database seeders
-├── resources/
-│   ├── views/                    # Blade templates
-│   │   ├── layouts/              # Layout files
-│   │   ├── assessments/          # Assessment views
-│   │   ├── kriteria/             # Criteria views
-│   │   ├── suppliers/            # Supplier views
-│   │   ├── materials/            # Material views
-│   │   ├── pages/                # Page views
-│   │   ├── users/                # User views
-│   │   └── components/           # Reusable components
-│   └── css/                      # Custom CSS
-├── routes/
-│   └── web.php                   # Application routes
-├── public/                       # Public assets
-├── config/                       # Configuration files
-├── storage/                      # Storage directory
-└── tests/                        # Test files
+X = [xᵢⱼ] dimana i = supplier, j = kriteria
+```
+Matriks nilai asli dari assessment.
+
+#### 2️⃣ Matriks Ternormalisasi (Normalized Matrix)
+```
+rᵢⱼ = xᵢⱼ / √(Σxᵢⱼ²)
+```
+Normalisasi menggunakan metode Euclidean.
+
+#### 3️⃣ Matriks Ternormalisasi Terbobot (Weighted Matrix)
+```
+vᵢⱼ = wⱼ × rᵢⱼ
+```
+Dimana `wⱼ` adalah bobot kriteria.
+
+#### 4️⃣ Solusi Ideal Positif & Negatif
+```
+A⁺ = {max(vᵢⱼ) jika Benefit, min(vᵢⱼ) jika Cost}
+A⁻ = {min(vᵢⱼ) jika Benefit, max(vᵢⱼ) jika Cost}
 ```
 
-## Testing
-
-### Menjalankan Test
+#### 5️⃣ Perhitungan Jarak
 ```
- php artisan test - Jalankan semua test
-
- php artisan test --filter AssessmentTest - Test spesifik
-
- php artisan test --coverage-html coverage/ - Dengan coverage
+D⁺ᵢ = √[Σ(vᵢⱼ - A⁺ⱼ)²]
+D⁻ᵢ = √[Σ(vᵢⱼ - A⁻ⱼ)²]
 ```
 
-### Jenis Test
+#### 6️⃣ Nilai Preferensi (Preference Score)
 ```
- Unit Tests - Test model dan service
-
- Feature Tests - Test controller dan route
-
- Browser Tests - Test interaksi UI
- ```
-
-## Deployment
-
-### Checklist Production
-
+Vᵢ = D⁻ᵢ / (D⁺ᵢ + D⁻ᵢ)
 ```
-1. Update file .env untuk production
+Range: 0-1 (semakin tinggi semakin baik)
 
-2. Set APP_DEBUG=false
+#### 7️⃣ Ranking Final
+Supplier diurutkan berdasarkan nilai preferensi `Vᵢ` tertinggi.
 
-3. Konfigurasi kredensial database yang benar
+---
 
-4. Setup konfigurasi email
+## 🗂️ Struktur Database
 
-5. Konfigurasi storage links
+### Skema Utama
+
+```sql
+users
+├── id
+├── name
+├── email
+├── password
+└── role (admin/manager)
+
+kriteria
+├── id
+├── nama_kriteria
+├── bobot
+├── type (benefit/cost)
+└── keterangan
+
+suppliers
+├── id
+├── kode_supplier
+├── nama_supplier
+├── alamat
+├── kontak
+├── kategori_material
+└── status
+
+materials
+├── id
+├── supplier_id
+├── nama_material
+├── jenis_logam
+├── grade
+├── spesifikasi_teknis
+└── harga_per_kg
+
+assessments
+├── id
+├── material_id
+├── tahun
+├── deskripsi
+└── timestamps
+
+assessment_scores
+├── id
+├── assessment_id
+├── supplier_id
+├── kriteria_id
+└── score
+
+topsis_results
+├── id
+├── assessment_id
+├── supplier_id
+├── preference_score
+├── rank
+└── timestamps
 ```
 
+---
 
-### Perintah Optimasi
+## 🛣️ API Routes
 
+### Authentication
 ```
- php artisan config:cache - Cache konfigurasi
-
- php artisan route:cache - Cache routes
-
- php artisan view:cache - Cache views
-
- php artisan optimize:clear - Clear semua cache
-
- npm run build - Compile assets untuk production
+GET  /           → Redirect to login
+GET  /login      → Login page
+POST /login      → Process login
+POST /logout     → Logout
+GET  /register   → Register page (optional)
 ```
 
-
-### Environment Variables
+### Dashboard
 ```
-APP_NAME="SPK TOPSIS"
+GET  /dashboard  → Role-based dashboard
+                   - Admin: Full statistics
+                   - Manager: Monitoring dashboard
+```
 
+### Master Data (Admin Only)
+```
+Kriteria:
+  GET    /kriteria              → List kriteria
+  GET    /kriteria/create       → Create form
+  POST   /kriteria/store        → Save kriteria
+  GET    /kriteria/edit/{id}    → Edit form
+  POST   /kriteria/update/{id}  → Update kriteria
+  DELETE /kriteria/delete/{id}  → Delete kriteria
+
+Supplier:
+  GET    /suppliers             → List supplier
+  POST   /suppliers/store       → Save supplier
+  POST   /suppliers/import      → Import Excel
+  GET    /suppliers/download-template → Template Excel
+  DELETE /suppliers/delete/{id} → Delete supplier
+
+Material:
+  GET    /materials             → List material
+  POST   /materials/store       → Save material
+  DELETE /materials/delete/{id} → Delete material
+
+Users:
+  GET    /users                 → List users
+  POST   /users/store           → Create user
+  DELETE /users/delete/{id}     → Delete user
+```
+
+### Assessment System (Admin Only)
+```
+GET  /assessments              → List assessments
+GET  /assessments/create       → Create assessment
+POST /assessments/store        → Save assessment
+GET  /assessments/{id}         → View assessment detail
+GET  /assessments/{id}/scores  → Input scores form
+POST /assessments/{id}/scores/save → Save scores
+POST /assessments/{id}/calculate   → Run TOPSIS calculation
+```
+
+### Reports (Admin & Manager)
+```
+GET /reports/suppliers         → Supplier report
+GET /reports/assessments       → Assessment report
+GET /reports/kriteria          → Kriteria report
+GET /reports/executive-summary → Executive summary
+
+Export:
+GET /reports/assessments/{id}/export-detailed?format=pdf|excel
+GET /reports/kriteria?format=pdf|excel
+GET /reports/executive-summary?format=pdf|excel
+GET /reports/export/suppliers-pdf
+GET /reports/export/suppliers-excel
+```
+
+---
+
+## 🎨 Tech Stack
+
+### Backend
+- **Framework:** Laravel 11.x
+- **Language:** PHP 8.1+
+- **Database:** MySQL 5.7+ / MariaDB
+- **Authentication:** Laravel Fortify
+
+### Frontend
+- **Template Engine:** Blade
+- **CSS Framework:** Tailwind CSS 3.x
+- **UI Components:** Flux UI
+- **JavaScript:** Vanilla JS + Alpine.js
+- **Icons:** FontAwesome 6
+- **Notifications:** SweetAlert2
+
+### Libraries & Packages
+- **PDF Generation:** barryvdh/laravel-dompdf
+- **Excel Export:** maatwebsite/laravel-excel
+- **Livewire:** Laravel Livewire 3.x
+
+---
+
+## 🔒 Keamanan
+
+### Implementasi Keamanan
+
+✅ **Authentication & Authorization**
+- Laravel Fortify untuk autentikasi
+- Role-based access control (Admin/Manager)
+- Route middleware protection
+- Session management yang aman
+
+✅ **Input Security**
+- CSRF token protection
+- Input validation & sanitization
+- XSS prevention via Blade templates
+- SQL injection prevention via Eloquent ORM
+
+✅ **Data Protection**
+- Password hashing dengan bcrypt
+- Secure session handling
+- Environment variable untuk credentials
+- File upload security
+
+✅ **Route Protection**
+```php
+// Admin-only routes
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+    Route::resource('kriteria', KriteriaController::class);
+    Route::resource('suppliers', SupplierController::class);
+    // ...
+});
+
+// Both admin & manager
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/reports/*', [ReportController::class]);
+});
+```
+
+---
+
+## 🧪 Testing
+
+### Running Tests
+```bash
+# Run all tests
+php artisan test
+
+# Run specific test
+php artisan test --filter AssessmentTest
+
+# With coverage
+php artisan test --coverage
+```
+
+### Test Types
+- **Unit Tests** - Model & Service logic
+- **Feature Tests** - Controllers & Routes
+- **Browser Tests** - UI interactions (Dusk)
+
+---
+
+## 🚢 Deployment
+
+### Production Checklist
+
+```bash
+# 1. Update environment
+cp .env.example .env
+# Edit .env dengan kredensial production
+
+# 2. Set production mode
 APP_ENV=production
-
 APP_DEBUG=false
+APP_URL=https://yourdomain.com
 
+# 3. Install dependencies
+composer install --optimize-autoloader --no-dev
+npm install --production
+
+# 4. Generate key
+php artisan key:generate
+
+# 5. Run migrations
+php artisan migrate --force
+
+# 6. Build assets
+npm run build
+
+# 7. Optimize
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan optimize
+
+# 8. Set permissions
+chmod -R 755 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+```
+
+### Environment Variables (Production)
+```env
+APP_NAME="SPK TOPSIS"
+APP_ENV=production
+APP_DEBUG=false
 APP_URL=https://yourdomain.com
 
 DB_CONNECTION=mysql
-
 DB_HOST=127.0.0.1
-
 DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=secure_password
 
-DB_DATABASE=spk_topsis
-
-DB_USERNAME=username
-
-DB_PASSWORD=securepassword
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USERNAME=your_email
+MAIL_PASSWORD=your_password
 ```
 
-## Troubleshooting
+---
 
-### Masalah Umum
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**❌ Migration Error**
+```bash
+php artisan migrate:fresh --seed
 ```
-1. Error Migrasi
 
-php artisan migrate:refresh --seed
-
-2. Masalah Permission
-
+**❌ Permission Denied**
+```bash
 chmod -R 755 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+```
 
-3. Kompilasi Asset
+**❌ Assets Not Loading**
+```bash
+npm install
+npm run build
+php artisan optimize:clear
+```
 
-npm install && npm run build
-
-4. Masalah Cache
-
+**❌ Cache Issues**
+```bash
 php artisan cache:clear
-
 php artisan config:clear
-
 php artisan route:clear
-
 php artisan view:clear
 ```
 
-### Debug Mode
-
+**❌ Storage Link Missing**
+```bash
+php artisan storage:link
 ```
-Untuk development, enable debug mode:
 
-APP_DEBUG=true
+---
 
-```
-## Kontribusi
+## 📖 Documentation
 
-### Workflow Development
-```
+### Additional Resources
+- [Laravel Documentation](https://laravel.com/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [TOPSIS Method](https://en.wikipedia.org/wiki/TOPSIS)
+
+---
+
+## 👨‍💻 Development
+
+### Workflow
 1. Fork repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
-2. Buat feature branch
+### Coding Standards
+- Follow PSR-12 coding standards
+- Write clear commit messages
+- Add comments for complex logic
+- Update documentation as needed
+- Write tests for new features
 
-3. Buat perubahan
+---
 
-4. Tulis/update tests
+## 📄 License
 
-5. Submit pull request
-```
-### Standar Kode
-```
- Ikuti standar koding PSR-12
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
- Tulis commit message yang jelas
+---
 
- Tambahkan komentar untuk logika kompleks
+## 🤝 Support
 
- Update dokumentasi jika diperlukan
-```
-## License
-```
-MIT License - Lihat file LICENSE untuk detail.
-```
-## Support
- Issues: GitHub Issues tracker
+- **Issues:** [GitHub Issues](https://github.com/wahyusnjy/kkp_spk/issues)
+- **Email:** support@yourdomain.com
+- **Documentation:** [Project Wiki](https://github.com/wahyusnjy/kkp_spk/wiki)
 
- Email: support@yourdomain.com
+---
 
- Dokumentasi: Project Wiki
+## 📊 Version History
 
-Versi: 1.0.0
+- **v1.0.0** (2024) - Initial Release
+  - Core TOPSIS calculation
+  - Master data management
+  - Assessment system
+  - Basic reporting
 
-Terakhir Diupdate: 2024
+- **v1.1.0** (2025) - Feature Updates
+  - Role-based access control
+  - Enhanced reporting (5 report types)
+  - Modern login UI
+  - Executive summary
+  - Kriteria report
+  - Detail assessment export
+  - Manager dashboard
 
-Status: Production Ready
+---
+
+## ✨ Credits
+
+Developed with ❤️ for KKP (Kerja Praktik Kuliah)
+
+**Developer:** Wahyusnjy  
+**Repository:** [github.com/wahyusnjy/kkp_spk](https://github.com/wahyusnjy/kkp_spk)  
+**Year:** 2024-2025
+
+---
+
+<div align="center">
+
+**⭐ Star this repo if you find it useful!**
+
+Made with [Laravel](https://laravel.com) & [Tailwind CSS](https://tailwindcss.com)
+
+</div>
