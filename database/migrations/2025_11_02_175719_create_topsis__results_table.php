@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('supplier_id');
             $table->decimal('preference_score', 12, 6);
             $table->integer('rank');
-            $table->json('calculation_detail')->nullable();
+            $table->json('calculation_details')->nullable();
             $table->timestamps();
         });
     }
