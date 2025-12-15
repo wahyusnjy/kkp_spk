@@ -216,14 +216,6 @@
                 });
             }
 
-            // ====== Search Function =======
-            const searchInput = document.getElementById('searchKriteria');
-            searchInput.addEventListener('keypress', function(e) {
-                if(e.key === 'Enter') {
-                    document.getElementById('searchForm').submit();
-                }
-            });
-
 
             // ====== Modal listener =======
 
@@ -251,6 +243,16 @@
             }
         });
 
+
+        // ====== Search Function =======
+        const searchInput = document.getElementById('searchKriteria');
+        searchInput.addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                document.getElementById('searchForm').submit();
+            }
+        });
+
+        
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const openModals = document.querySelectorAll('.fixed:not(.hidden)');
