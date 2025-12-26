@@ -188,19 +188,25 @@
                         </a>
                     @elseif($assessment->topsisResults->count() == 0)
                         <!-- Proses TOPSIS -->
-                        <a href="{{ route('assessments.calculate', $assessment->id) }}" 
-                           class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-lg transition flex items-center justify-between group">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-calculator text-white"></i>
-                                </div>
-                                <div>
-                                    <span class="font-medium">Proses TOPSIS</span>
-                                    <p class="text-purple-100 text-sm">Hitung rank supplier</p>
-                                </div>
+                        <button type="button" 
+                            onclick="event.preventDefault(); document.getElementById('calculate-form').submit();"
+                            class="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-lg transition flex items-center justify-between group">
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-calculator text-white"></i>
                             </div>
-                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                        </a>
+                            <div class="text-left">
+                                <span class="font-medium">Proses TOPSIS</span>
+                                <p class="text-purple-100 text-sm">Hitung rank supplier</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+
+                    <form id="calculate-form" action="{{ route('assessments.calculate', $assessment->id) }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                         
                     @else
                         <!-- Lihat Hasil TOPSIS -->
@@ -408,3 +414,10 @@
 .hover\:border-blue-500\/30:hover { border-color: rgba(59, 130, 246, 0.3); }
 .hover\:border-green-500\/30:hover { border-color: rgba(34, 197, 94, 0.3); }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calculateButton = document.querySelector('.calculate-button');
+        
+    });
+</script>

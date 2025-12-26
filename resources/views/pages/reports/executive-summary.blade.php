@@ -11,14 +11,14 @@
             </div>
 
             {{-- Export Options Card --}}
-            <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden">
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div class="p-8">
                     <div class="text-center mb-8">
                         <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 mb-4 shadow-lg">
                             <i class="fas fa-briefcase text-white text-3xl"></i>
                         </div>
                         <h2 class="text-2xl font-semibold text-white mb-2">Pilih Format Export</h2>
-                        <p class="text-gray-400">Download laporan ringkasan lengkap sistem</p>
+                        <p class="text-gray-600 dark:text-gray-400">Download laporan ringkasan lengkap sistem</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

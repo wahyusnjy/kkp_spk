@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<script>
+    // Apply theme immediately to prevent flash
+    (function() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    })();
+</script>
     <head>
         @include('partials.head')
     </head>
@@ -41,6 +52,19 @@
             </flux:navlist>
 
             <flux:spacer />
+
+            {{-- Theme Toggle Button --}}
+                {{-- <div class="px-2 pb-2">
+                    <button 
+                        type="button"
+                        data-theme-toggle
+                        class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                        title="Toggle Theme"
+                    >
+                        <i class="fa-solid fa-sun w-5 text-center"></i>
+                        <span>Toggle Theme</span>
+                    </button>
+                </div> --}}
 
             <flux:navlist variant="outline">
                 <form method="POST" action="{{ route('logout') }}" class="w-full">
@@ -103,6 +127,16 @@
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <flux:spacer />
+
+            {{-- Theme Toggle for Mobile --}}
+            <button 
+                type="button"
+                data-theme-toggle
+                class="flex items-center justify-center rounded-lg p-2 transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                title="Toggle Theme"
+            >
+                <i class="fa-solid fa-sun text-lg"></i>
+            </button>
 
             <flux:dropdown position="top" align="end">
                 <flux:profile

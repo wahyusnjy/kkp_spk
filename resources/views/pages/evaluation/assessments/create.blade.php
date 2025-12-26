@@ -6,19 +6,19 @@
                 <h1 class="text-2xl font-bold text-white">Tambah Assessment Baru</h1>
                 <p class="text-gray-400 mt-1">Buat penilaian supplier baru dengan nilai kriteria</p>
             </div>
-            <a href="{{ route('assessments.index') }}" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg transition flex items-center gap-2">
+            <a href="{{ route('assessments.index') }}" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg transition flex items-center gap-2">
                 <i class="fas fa-arrow-left"></i>
                 <span>Kembali</span>
             </a>
         </div>
 
         <!-- Form Section -->
-        <div class="bg-dark-300 rounded-xl border border-dark-200 overflow-hidden">
+        <div class="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
             <form action="{{ route('assessments.store') }}" method="POST" id="assessmentForm">
                 @csrf
                 
                 <!-- Progress Steps -->
-                <div class="px-6 py-4 border-b border-dark-200">
+                <div class="px-6 py-4 border-b border-gray-800">
                     <div class="flex items-center justify-between max-w-2xl mx-auto">
                         <div class="flex flex-col items-center">
                             <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mb-2">
@@ -39,7 +39,7 @@
                 <div class="p-6">
                     <!-- Error Messages -->
                     @if($errors->any())
-                        <div class="mb-6 p-4 bg-red-600/20 border border-red-600 rounded-lg">
+                        <div class="mb-6 p-4 bg-red-900/30 border border-red-700 rounded-lg">
                             <div class="flex items-center gap-3 mb-2">
                                 <i class="fas fa-exclamation-circle text-red-400"></i>
                                 <h3 class="text-white font-semibold">Terjadi Kesalahan</h3>
@@ -53,14 +53,14 @@
                     @endif
 
                     <!-- Information Card -->
-                    <div class="mb-6 bg-blue-600/10 border border-blue-600/30 rounded-xl p-4">
+                    <div class="mb-6 bg-blue-900/20 border border-blue-800/50 rounded-xl p-4">
                         <div class="flex items-start gap-3">
                             <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                                 <i class="fas fa-info-circle text-white"></i>
                             </div>
                             <div>
-                                <h4 class="text-white font-medium mb-2">Informasi Penting</h4>
-                                <p class="text-gray-300 text-sm">
+                                <h4 class="text-blue-300 font-medium mb-2">Informasi Penting</h4>
+                                <p class="text-gray-400 text-sm">
                                     Form ini akan membuat assessment baru dan langsung menginput nilai untuk setiap supplier.
                                     Anda dapat menambahkan multiple supplier sekaligus.
                                 </p>
@@ -80,10 +80,10 @@
                                         Material *
                                     </label>
                                     <select name="material_id" required
-                                            class="w-full bg-dark-400 border border-dark-200 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                                        <option value="">Pilih Material</option>
+                                            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition hover:border-gray-600">
+                                        <option value="" class="bg-gray-800">Pilih Material</option>
                                         @foreach($materials as $material)
-                                            <option value="{{ $material->id }}" {{ old('material_id') == $material->id ? 'selected' : '' }}>
+                                            <option value="{{ $material->id }}" {{ old('material_id') == $material->id ? 'selected' : '' }} class="bg-gray-800">
                                                 {{ $material->nama_material }} 
                                                 @if($material->kode_material)
                                                     ({{ $material->kode_material }})
@@ -106,7 +106,7 @@
                                            max="{{ date('Y') + 1 }}" 
                                            value="{{ old('tahun', date('Y')) }}" 
                                            required
-                                           class="w-full bg-dark-400 border border-dark-200 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                                           class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition hover:border-gray-600">
                                     <p class="text-gray-400 text-sm">Tahun penilaian assessment (maks: {{ date('Y') + 1 }})</p>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@
                                     </label>
                                     <textarea name="deskripsi" 
                                               rows="4"
-                                              class="w-full bg-dark-400 border border-dark-200 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                              class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition hover:border-gray-600"
                                               placeholder="Masukkan deskripsi assessment...">{{ old('deskripsi') }}</textarea>
                                     <p class="text-gray-400 text-sm">Deskripsi atau catatan tentang assessment ini</p>
                                 </div>
@@ -129,10 +129,10 @@
                         </div>
 
                         <!-- Navigation -->
-                        <div class="flex justify-end mt-8 pt-6 border-t border-dark-200">
+                        <div class="flex justify-end mt-8 pt-6 border-t border-gray-800">
                             <button type="button" 
                                     onclick="nextStep()"
-                                    class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition flex items-center gap-2">
+                                    class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition flex items-center gap-2 hover:shadow-lg hover:shadow-blue-900/30">
                                 <span>Lanjutkan ke Input Nilai</span>
                                 <i class="fas fa-arrow-right"></i>
                             </button>
@@ -147,7 +147,7 @@
                                 <i class="fas fa-truck mr-2 text-green-400"></i>
                                 Pilih Supplier *
                             </label>
-                            <div class="bg-dark-400 border border-dark-200 rounded-lg p-4">
+                            <div class="bg-gray-800 border border-gray-700 rounded-lg p-4">
                                 <div class="flex justify-between items-center mb-4">
                                     <div>
                                         <h4 class="text-white font-medium">Supplier yang Dinilai</h4>
@@ -155,7 +155,7 @@
                                     </div>
                                     <button type="button" 
                                             onclick="addSupplier()"
-                                            class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition flex items-center gap-2">
+                                            class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition flex items-center gap-2 hover:shadow-lg hover:shadow-green-900/30">
                                         <i class="fas fa-plus"></i>
                                         <span>Tambah Supplier</span>
                                     </button>
@@ -164,12 +164,12 @@
                                 <!-- Supplier Container -->
                                 <div id="supplierContainer" class="space-y-4">
                                     <!-- Supplier 1 -->
-                                    <div class="supplier-card p-4 bg-dark-300 rounded-lg border border-dark-200">
+                                    <div class="supplier-card p-4 bg-gray-800/50 rounded-lg border border-gray-700 hover:border-gray-600 transition">
                                         <div class="flex justify-between items-center mb-4">
                                             <h5 class="text-white font-medium">Supplier 1</h5>
                                             <button type="button" 
                                                     onclick="removeSupplier(this)"
-                                                    class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition text-sm">
+                                                    class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition text-sm hover:shadow-lg hover:shadow-red-900/30">
                                                 <i class="fas fa-trash"></i>
                                                 Hapus
                                             </button>
@@ -179,10 +179,10 @@
                                             <div>
                                                 <label class="block text-gray-300 text-sm mb-2">Supplier *</label>
                                                 <select name="scores[0][supplier_id]" required
-                                                        class="supplier-select w-full bg-dark-500 border border-dark-200 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                                                    <option value="">Pilih Supplier</option>
+                                                        class="supplier-select w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition hover:border-gray-500">
+                                                    <option value="" class="bg-gray-800">Pilih Supplier</option>
                                                     @foreach($suppliers as $supplier)
-                                                        <option value="{{ $supplier->id }}">
+                                                        <option value="{{ $supplier->id }}" class="bg-gray-800">
                                                             {{ $supplier->nama_supplier }}
                                                             @if($supplier->kode_supplier)
                                                                 ({{ $supplier->kode_supplier }})
@@ -196,14 +196,14 @@
                                         <!-- Kriteria Scores -->
                                         <div class="space-y-3">
                                             <label class="block text-gray-300 text-sm font-medium">Input Nilai Kriteria (0-100)</label>
-                                            <div class="bg-dark-500 rounded-lg p-3">
+                                            <div class="bg-gray-800 rounded-lg p-3 border border-gray-700">
                                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto pr-2">
                                                     @foreach($kriterias as $index => $kriteria)
                                                     <div class="space-y-2">
                                                         <div class="flex justify-between items-center">
                                                             <label class="text-gray-300 text-sm">
                                                                 {{ $kriteria->nama_kriteria }}
-                                                                <span class="text-xs px-2 py-1 ml-2 rounded {{ $kriteria->jenis == 'benefit' ? 'bg-green-600/20 text-green-400' : 'bg-red-600/20 text-red-400' }}">
+                                                                <span class="text-xs px-2 py-1 ml-2 rounded {{ $kriteria->jenis == 'benefit' ? 'bg-green-900/40 text-green-400' : 'bg-red-900/40 text-red-400' }}">
                                                                     {{ $kriteria->jenis == 'benefit' ? 'B' : 'C' }}
                                                                 </span>
                                                             </label>
@@ -217,10 +217,10 @@
                                                                    step="0.1"
                                                                    value="0"
                                                                    required
-                                                                   class="score-input w-full bg-dark-600 border border-dark-200 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm"
+                                                                   class="score-input w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm hover:border-gray-500"
                                                                    placeholder="0-100"
                                                                    data-kriteria-id="{{ $kriteria->id }}">
-                                                            <span class="text-gray-400 text-sm w-10">/100</span>
+                                                            <span class="text-gray-500 text-sm w-10">/100</span>
                                                         </div>
                                                     </div>
                                                     @endforeach
@@ -230,7 +230,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-4 text-xs text-gray-400">
+                                <div class="mt-4 text-xs text-gray-500">
                                     <i class="fas fa-exclamation-circle mr-1"></i>
                                     Minimal 1 supplier harus dipilih. Nilai harus antara 0-100.
                                 </div>
@@ -238,22 +238,22 @@
                         </div>
 
                         <!-- Navigation -->
-                        <div class="flex justify-between mt-8 pt-6 border-t border-dark-200">
+                        <div class="flex justify-between mt-8 pt-6 border-t border-gray-800">
                             <button type="button" 
                                     onclick="prevStep()"
-                                    class="px-6 py-3 text-gray-300 hover:text-white transition rounded-lg border border-dark-200 hover:bg-dark-400 flex items-center gap-2">
+                                    class="px-6 py-3 text-gray-400 hover:text-white transition rounded-lg border border-gray-700 hover:bg-gray-800 flex items-center gap-2 hover:border-gray-600">
                                 <i class="fas fa-arrow-left"></i>
                                 <span>Kembali</span>
                             </button>
                             <div class="flex gap-3">
                                 <button type="button" 
                                         onclick="saveAsDraft()"
-                                        class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition flex items-center gap-2">
+                                        class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition flex items-center gap-2 hover:shadow-lg hover:shadow-gray-900/30">
                                     <i class="fas fa-save"></i>
                                     <span>Simpan sebagai Draft</span>
                                 </button>
                                 <button type="submit" 
-                                        class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition flex items-center gap-2">
+                                        class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition flex items-center gap-2 hover:shadow-lg hover:shadow-blue-900/30">
                                     <i class="fas fa-check"></i>
                                     <span>Simpan dan Proses</span>
                                 </button>
@@ -268,14 +268,14 @@
         </div>
 
         <!-- Tips Card -->
-        <div class="bg-green-600/10 border border-green-600/30 rounded-xl p-4">
+        <div class="bg-green-900/20 border border-green-800/50 rounded-xl p-4">
             <div class="flex items-start gap-3">
                 <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                     <i class="fas fa-lightbulb text-white"></i>
                 </div>
                 <div>
-                    <h4 class="text-white font-medium mb-2">Tips Pengisian Nilai</h4>
-                    <ul class="text-gray-300 text-sm space-y-1">
+                    <h4 class="text-green-300 font-medium mb-2">Tips Pengisian Nilai</h4>
+                    <ul class="text-gray-400 text-sm space-y-1">
                         <li>• <span class="text-green-400">Benefit (B):</span> Semakin tinggi nilai semakin baik</li>
                         <li>• <span class="text-red-400">Cost (C):</span> Semakin rendah nilai semakin baik</li>
                         <li>• Anda dapat menambahkan multiple supplier sekaligus</li>
@@ -342,13 +342,13 @@
             
             // Create supplier card HTML
             const supplierCard = document.createElement('div');
-            supplierCard.className = 'supplier-card p-4 bg-dark-300 rounded-lg border border-dark-200';
+            supplierCard.className = 'supplier-card p-4 bg-gray-800/50 rounded-lg border border-gray-700 hover:border-gray-600 transition';
             supplierCard.innerHTML = `
                 <div class="flex justify-between items-center mb-4">
                     <h5 class="text-white font-medium">Supplier ${newIndex + 1}</h5>
                     <button type="button" 
                             onclick="removeSupplier(this)"
-                            class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition text-sm">
+                            class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition text-sm hover:shadow-lg hover:shadow-red-900/30">
                         <i class="fas fa-trash"></i>
                         Hapus
                     </button>
@@ -358,8 +358,8 @@
                     <div>
                         <label class="block text-gray-300 text-sm mb-2">Supplier *</label>
                         <select name="scores[${newIndex}][supplier_id]" required
-                                class="supplier-select w-full bg-dark-500 border border-dark-200 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
-                            <option value="">Pilih Supplier</option>
+                                class="supplier-select w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition hover:border-gray-500">
+                            <option value="" class="bg-gray-800">Pilih Supplier</option>
                             ${getSupplierOptions()}
                         </select>
                     </div>
@@ -368,7 +368,7 @@
                 <!-- Kriteria Scores -->
                 <div class="space-y-3">
                     <label class="block text-gray-300 text-sm font-medium">Input Nilai Kriteria (0-100)</label>
-                    <div class="bg-dark-500 rounded-lg p-3">
+                    <div class="bg-gray-800 rounded-lg p-3 border border-gray-700">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto pr-2">
                             ${getKriteriaInputs(newIndex)}
                         </div>
@@ -413,7 +413,7 @@
 
         function getSupplierOptions() {
             return @json($suppliers).map(supplier => 
-                `<option value="${supplier.id}">${supplier.nama_supplier}${supplier.kode_supplier ? ` (${supplier.kode_supplier})` : ''}</option>`
+                `<option value="${supplier.id}" class="bg-gray-800">${supplier.nama_supplier}${supplier.kode_supplier ? ` (${supplier.kode_supplier})` : ''}</option>`
             ).join('');
         }
 
@@ -423,7 +423,7 @@
                     <div class="flex justify-between items-center">
                         <label class="text-gray-300 text-sm">
                             ${kriteria.nama_kriteria}
-                            <span class="text-xs px-2 py-1 ml-2 rounded ${kriteria.jenis == 'benefit' ? 'bg-green-600/20 text-green-400' : 'bg-red-600/20 text-red-400'}">
+                            <span class="text-xs px-2 py-1 ml-2 rounded ${kriteria.jenis == 'benefit' ? 'bg-green-900/40 text-green-400' : 'bg-red-900/40 text-red-400'}">
                                 ${kriteria.jenis == 'benefit' ? 'B' : 'C'}
                             </span>
                         </label>
@@ -437,10 +437,10 @@
                                step="0.1"
                                value="0"
                                required
-                               class="score-input w-full bg-dark-600 border border-dark-200 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm"
+                               class="score-input w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm hover:border-gray-500"
                                placeholder="0-100"
                                data-kriteria-id="${kriteria.id}">
-                        <span class="text-gray-400 text-sm w-10">/100</span>
+                        <span class="text-gray-500 text-sm w-10">/100</span>
                     </div>
                 </div>
             `).join('');
@@ -498,7 +498,7 @@
             }
             
             const alertDiv = document.createElement('div');
-            alertDiv.className = `custom-alert mb-6 p-4 ${type === 'error' ? 'bg-red-600/20 border-red-600' : 'bg-yellow-600/20 border-yellow-600'} border rounded-lg`;
+            alertDiv.className = `custom-alert mb-6 p-4 ${type === 'error' ? 'bg-red-900/30 border-red-700' : 'bg-yellow-900/30 border-yellow-700'} border rounded-lg`;
             alertDiv.innerHTML = `
                 <div class="flex items-center gap-3">
                     <i class="fas ${type === 'error' ? 'fa-exclamation-circle text-red-400' : 'fa-exclamation-triangle text-yellow-400'}"></i>
@@ -542,23 +542,23 @@
     </script>
 
     <style>
-        /* Custom scrollbar */
+        /* Custom scrollbar for dark mode */
         .max-h-60::-webkit-scrollbar {
             width: 6px;
         }
 
         .max-h-60::-webkit-scrollbar-track {
-            background: #374151;
+            background: #1f2937;
             border-radius: 3px;
         }
 
         .max-h-60::-webkit-scrollbar-thumb {
-            background: #6B7280;
+            background: #4b5563;
             border-radius: 3px;
         }
 
         .max-h-60::-webkit-scrollbar-thumb:hover {
-            background: #9CA3AF;
+            background: #6b7280;
         }
 
         /* Smooth transitions */
@@ -566,13 +566,30 @@
             transition: all 0.2s ease-in-out;
         }
 
-        /* Input focus effects */
+        /* Input focus effects for dark mode */
         input:focus, select:focus, textarea:focus {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Hover effects for dark mode */
+        .hover\:shadow-lg:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
         .hidden {
             display: none !important;
+        }
+
+        /* Dark mode placeholder */
+        ::placeholder {
+            color: #9ca3af;
+            opacity: 0.7;
+        }
+
+        /* Selection color */
+        ::selection {
+            background-color: rgba(59, 130, 246, 0.3);
+            color: white;
         }
     </style>
 </x-layouts.app>

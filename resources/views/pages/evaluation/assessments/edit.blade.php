@@ -15,9 +15,7 @@
         <!-- Form Section -->
         <div class="bg-dark-300 rounded-xl border border-dark-200 overflow-hidden">
             <form action="{{ route('assessments.update', $assessment->id) }}" method="POST" id="assessmentForm">
-                @csrf
-                @method('PUT')
-                
+            @csrf
                 <!-- Progress Steps -->
                 <div class="px-6 py-4 border-b border-dark-200">
                     <div class="flex items-center justify-between max-w-2xl mx-auto">

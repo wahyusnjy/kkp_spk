@@ -67,7 +67,7 @@
         Route::get('/create', [AssessmentController::class, 'create'])->name('assessments.create')->middleware(['auth', 'verified']);
         Route::post('/store', [AssessmentController::class, 'store'])->name('assessments.store')->middleware(['auth', 'verified']);
         Route::get('/edit/{id}', [AssessmentController::class, 'edit'])->name('assessments.edit')->middleware(['auth', 'verified']);
-        Route::post('/update/{id}', [AssessmentController::class, 'post'])->name('assessments.update')->middleware(['auth', 'verified']);
+        Route::post('/update/{id}', [AssessmentController::class, 'update'])->name('assessments.update')->middleware(['auth', 'verified']);
         Route::post('/delete/{id}', [AssessmentController::class, 'destroy'])->name('assessments.destroy')->middleware(['auth', 'verified']);
         // Detail assessment
         Route::get('/{id}', [AssessmentController::class, 'show'])->name('assessments.show')->middleware(['auth', 'verified']);

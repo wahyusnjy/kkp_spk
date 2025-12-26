@@ -30,13 +30,13 @@
     // dd(in_array('edit', $actions));
 @endphp
 
-<div class="dark:bg-zinc-900 rounded-xl border border-zinc-700 overflow-hidden shadow-lg fade-in">
+<div class="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden shadow-lg fade-in">
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-zinc-700">
-            <thead class="bg-zinc-800">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
+            <thead class="bg-gray-50 dark:bg-zinc-800">
                 <tr>
                     @if($withNumber)
-                    <th scope="col" class="px-4 md:px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                    <th scope="col" class="px-4 md:px-6 py-4 text-left text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">
                         <div class="flex items-center gap-1">
                             <span>No</span>
                         </div>
@@ -52,31 +52,31 @@
                         @endphp
                         
                         <th scope="col" 
-                            class="px-4 md:px-6 py-4 text-{{ $align }} text-xs font-medium text-gray-400 uppercase tracking-wider {{ $sortable ? 'cursor-pointer hover:text-white transition group' : '' }}"
+                            class="px-4 md:px-6 py-4 text-{{ $align }} text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider {{ $sortable ? 'cursor-pointer hover:text-gray-900 dark:hover:text-white transition group' : '' }}"
                             style="width: {{ $width }}"
                             @if($sortable) onclick="sortTable('{{ $columnKey }}')" @endif>
                             <div class="flex items-center gap-1 {{ $align === 'right' ? 'justify-end' : '' }}">
                                 <span>{{ $label }}</span>
                                 @if($sortable)
-                                <i class="fas fa-sort text-gray-500 group-hover:text-gray-300"></i>
+                                <i class="fas fa-sort text-gray-400 dark:text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300"></i>
                                 @endif
                             </div>
                         </th>
                     @endforeach
 
                     @if($withActions)
-                    <th scope="col" class="px-4 md:px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
+                    <th scope="col" class="px-4 md:px-6 py-4 text-right text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">
                         Action
                     </th>
                     @endif
                 </tr>
             </thead>
-            <tbody class="divide-y divide-zinc-700">
+            <tbody class="bg-white dark:bg-zinc-900 divide-y divide-gray-200 dark:divide-zinc-700">
                 @forelse($data as $index => $item)
-                <tr class="hover:bg-zinc-800/50 transition-colors duration-200">
+                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors duration-200">
                     @if($withNumber)
                     <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-white">
+                        <div class="text-sm font-medium text-gray-900 dark:text-white">
                             @if($data instanceof \Illuminate\Pagination\LengthAwarePaginator)
                                 {{ $index + 1 + (($data->currentPage() - 1) * $data->perPage()) }}
                             @else
@@ -106,22 +106,22 @@
                                 {{-- Format default --}}
                                 @switch($format)
                                     @case('currency')
-                                        <div class="text-white font-semibold">
+                                        <div class="text-gray-900 dark:text-white font-semibold">
                                             Rp {{ number_format($value, 0, ',', '.') }}
                                         </div>
                                         @break
                                     
                                     @case('number')
-                                        <div class="text-white">
+                                        <div class="text-gray-900 dark:text-white">
                                             {{ number_format($value) }}
                                         </div>
                                         @break
                                     
                                     @case('percentage')
                                         <div class="flex items-center">
-                                            <span class="text-white font-semibold mr-2">{{ $value }}%</span>
-                                            <div class="w-16 bg-zinc-600 rounded-full h-2">
-                                                <div class="bg-blue-500 h-2 rounded-full" style="width: {{ $value }}%"></div>
+                                            <span class="text-gray-900 dark:text-white font-semibold mr-2">{{ $value }}%</span>
+                                            <div class="w-16 bg-gray-200 dark:bg-zinc-600 rounded-full h-2">
+                                                <div class="bg-blue-500 dark:bg-blue-500 h-2 rounded-full" style="width: {{ $value }}%"></div>
                                             </div>
                                         </div>
                                         @break
@@ -153,21 +153,21 @@
                                         @break
                                     
                                     @case('date')
-                                        <div class="text-white">
+                                        <div class="text-gray-900 dark:text-white">
                                             {{ \Carbon\Carbon::parse($value)->format('d M Y') }}
                                         </div>
                                         @break
                                     
                                     @case('datetime')
-                                        <div class="text-white">
+                                        <div class="text-gray-900 dark:text-white">
                                             {{ \Carbon\Carbon::parse($value)->format('d M Y H:i') }}
                                         </div>
                                         @break
                                     
                                     @default
-                                        <div class="text-white">{{ $value }}</div>
+                                        <div class="text-gray-900 dark:text-white">{{ $value }}</div>
                                         @if(is_array($columnConfig) && isset($columnConfig['subtitle']))
-                                            <div class="text-xs text-gray-400 mt-1">
+                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                                 {{ $item->{$columnConfig['subtitle']} ?? '' }}
                                             </div>
                                         @endif
@@ -180,7 +180,7 @@
                     <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex justify-end space-x-2">
                             @if(in_array('view', $actions))
-                                <button class="view-item-btn text-zinc-400 hover:text-zinc-300 transition p-1.5 rounded-lg hover:bg-zinc-900/20"
+                                <button class="view-item-btn text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-300 transition p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-900/20"
                                         data-id="{{ $item->$primaryKey }}"
                                         @foreach($tableColumns as $colKey => $colConfig)
                                             data-{{ $colKey }}="{{ $colKey }}"
@@ -225,7 +225,7 @@
                 <tr>
                     <td colspan="{{ count($tableColumns) + ($withNumber ? 1 : 0) + ($withActions ? 1 : 0) }}" 
                         class="px-4 md:px-6 py-8 text-center">
-                        <div class="flex flex-col items-center justify-center text-gray-400">
+                        <div class="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400">
                             <i class="fas fa-inbox text-4xl mb-2"></i>
                             <p class="text-lg font-medium">{{ $emptyMessage }}</p>
                         </div>
@@ -238,17 +238,17 @@
 
     {{-- Pagination --}}
     @if($data instanceof \Illuminate\Pagination\LengthAwarePaginator && $data->hasPages())
-    <div class="px-4 md:px-6 py-4 border-t border-zinc-700 bg-zinc-800">
+    <div class="px-4 md:px-6 py-4 border-t border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800">
         <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div class="text-sm text-gray-400">
-                Menampilkan <span class="font-medium text-white">{{ $data->firstItem() }} - {{ $data->lastItem() }}</span> dari 
-                <span class="font-medium text-white">{{ $data->total() }}</span> data
+            <div class="text-sm text-gray-600 dark:text-gray-400">
+                Menampilkan <span class="font-medium text-gray-900 dark:text-white">{{ $data->firstItem() }} - {{ $data->lastItem() }}</span> dari 
+                <span class="font-medium text-gray-900 dark:text-white">{{ $data->total() }}</span> data
             </div>
             
             <div class="flex items-center space-x-1">
             </div>
             
-            <div class="flex items-center space-x-2 text-sm text-gray-400">
+            <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
                 {{ $data->links('vendor.pagination.custom') }}
             </div>
         </div>
