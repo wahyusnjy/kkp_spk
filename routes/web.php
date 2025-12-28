@@ -38,7 +38,7 @@
         Route::get('/edit/{id}', [SupplierController::class, 'edit'])->name('supplier.edit')->middleware(['auth', 'verified']);
         Route::post('/update/{id}', [SupplierController::class, 'update'])->name('supplier.update')->middleware(['auth', 'verified']);
         Route::delete('/delete/{id}', [SupplierController::class, 'destroy'])->name('supplier.destroy')->middleware(['auth', 'verified']);
-        Route::get('/download-template', [SupplierController::class,'downloadTemplateImport'])->name('supplier.download-template')->middleware(['auth', 'index']);
+        Route::get('/download-template', [SupplierController::class,'downloadTemplateImport'])->name('supplier.download-template')->middleware(['auth', 'verified']);
         Route::post('/import', [SupplierController::class,'import'])->name('supplier.import')->middleware(['auth', 'verified']);
     });
 
