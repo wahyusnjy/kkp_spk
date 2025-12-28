@@ -538,7 +538,6 @@
                 
                 <form id="deleteForm" method="POST" action="">
                     @csrf
-                    @method('DELETE')
                     
                     <div class="flex justify-end space-x-3 mt-6 pt-5 border-t border-gray-700/50">
                         <button type="button" 
@@ -650,8 +649,9 @@ function confirmDelete(id, name) {
     const message = document.getElementById('deleteMessage');
     
     message.textContent = `Anda yakin ingin menghapus "${name}"? Tindakan ini tidak dapat dikembalikan.`;
-    form.action = "{{ route('assessments.destroy', ':id') }}";
+    let actionUrl = "{{ route('assessments.destroy', ':id') }}";
     
+    form.action = actionUrl.replace(':id', id);
     // Show modal with animation
     modal.classList.remove('hidden');
     setTimeout(() => {

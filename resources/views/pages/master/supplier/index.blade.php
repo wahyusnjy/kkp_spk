@@ -245,7 +245,7 @@
 
 
         // ====== Search Function =======
-        const searchInput = document.getElementById('searchKriteria');
+        const searchInput = document.getElementById('searchSupplier');
         searchInput.addEventListener('keypress', function(e) {
             if(e.key === 'Enter') {
                 document.getElementById('searchForm').submit();
@@ -315,12 +315,6 @@
             }
         }
         
-        const searchInput = document.getElementById('searchKriteria');
-        searchInput.addEventListener('keypress', function(e) {
-            if(e.key === 'Enter') {
-                document.getElementById('searchForm').submit();
-            }
-        });
 
         // Debug: Log semua edit buttons
         console.log('Edit buttons found:', document.querySelectorAll('.modal-toggle-import').length);

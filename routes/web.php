@@ -101,32 +101,32 @@
     Route::prefix('reports')->group(function () {
         // Laporan Supplier
         Route::prefix('suppliers')->group(function () {
-            Route::get('/', [ReportController::class, 'suppliers'])->name('reports.suppliers');
-            Route::get('/filter', [ReportController::class,'supplier_filter'])->name('reports.suppliers.filter');
-            Route::get('/export', [ReportController::class, 'exportSuppliers'])->name('reports.export.suppliers');
+            Route::get('/', [ReportController::class, 'suppliers'])->name('reports.suppliers')->middleware(['auth', 'verified']);
+            Route::get('/filter', [ReportController::class,'supplier_filter'])->name('reports.suppliers.filter')->middleware(['auth', 'verified']);
+            Route::get('/export', [ReportController::class, 'exportSuppliers'])->name('reports.export.suppliers')->middleware(['auth', 'verified']);
         });
         
         
         // Laporan Assessment
         Route::prefix('assessments')->group(function () {
-            Route::get('/', [ReportController::class, 'assessments'])->name('reports.assessments');
-            Route::get('/filter', [ReportController::class,'assessments_filter'])->name('reports.assessments.filter');
-            Route::get('/export', [ReportController::class, 'exportAssessments'])->name('reports.export.assessments');
-            Route::get('/{assessmentId}/export-detailed', [ReportController::class, 'exportDetailedAssessment'])->name('reports.export.assessment.detailed');
+            Route::get('/', [ReportController::class, 'assessments'])->name('reports.assessments')->middleware(['auth', 'verified']);
+            Route::get('/filter', [ReportController::class,'assessments_filter'])->name('reports.assessments.filter')->middleware(['auth', 'verified']);
+            Route::get('/export', [ReportController::class, 'exportAssessments'])->name('reports.export.assessments')->middleware(['auth', 'verified']);
+            Route::get('/{assessmentId}/export-detailed', [ReportController::class, 'exportDetailedAssessment'])->name('reports.export.assessment.detailed')->middleware(['auth', 'verified']);
         });
         
         // Laporan Kriteria
-        Route::get('/kriteria', [ReportController::class, 'kriteriaReport'])->name('reports.kriteria');
+        Route::get('/kriteria', [ReportController::class, 'kriteriaReport'])->name('reports.kriteria')->middleware(['auth', 'verified']);
         
         // Executive Summary
-        Route::get('/executive-summary', [ReportController::class, 'executiveSummary'])->name('reports.executive-summary');
+        Route::get('/executive-summary', [ReportController::class, 'executiveSummary'])->name('reports.executive-summary')->middleware(['auth', 'verified']);
         
         // Export Excel/PDF
-        Route::get('/export/suppliers-pdf', [ReportController::class, 'exportSuppliersPDF'])->name('reports.export.suppliers-pdf');
-        Route::get('/export/suppliers-excel', [ReportController::class, 'exportSuppliersExcel'])->name('reports.export.suppliers-excel');
-        Route::get('/export/results-pdf/{id}', [ReportController::class, 'exportResultsPDF'])->name('reports.export.results-pdf');
-        Route::get('/export/results-excel/{id}', [ReportController::class, 'exportResultsExcel'])->name('reports.export.results-excel');
-    })->middleware(['auth', 'verified']);
+        Route::get('/export/suppliers-pdf', [ReportController::class, 'exportSuppliersPDF'])->name('reports.export.suppliers-pdf')->middleware(['auth', 'verified']);
+        Route::get('/export/suppliers-excel', [ReportController::class, 'exportSuppliersExcel'])->name('reports.export.suppliers-excel')->middleware(['auth', 'verified']);
+        Route::get('/export/results-pdf/{id}', [ReportController::class, 'exportResultsPDF'])->name('reports.export.results-pdf')->middleware(['auth', 'verified']);
+        Route::get('/export/results-excel/{id}', [ReportController::class, 'exportResultsExcel'])->name('reports.export.results-excel')->middleware(['auth', 'verified']);
+    });
 
     Route::middleware(['auth'])->group(function () {
         Route::redirect('settings', 'settings/profile');

@@ -53,8 +53,8 @@ class ReportController extends Controller
         // Get summary data
         $summary = [
             'total_supplier' => Supplier::count(),
-            'active_supplier' => Supplier::where('status', 'aktif')->count(),
-            'inactive_supplier' => Supplier::where('status', 'non-aktif')->orWhere('status', 'tidak aktif')->count(),
+            'active_supplier' => Supplier::where('status', 'active')->count(),
+            'inactive_supplier' => Supplier::where('status', 'non-active')->orWhere('status', 'inactive')->count(),
             'total_category' => Supplier::distinct('kategori_material')->count('kategori_material'),
         ];
         
