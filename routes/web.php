@@ -86,11 +86,13 @@
     // Ranking Supplier (sesuai dengan yang sudah ada)
     Route::prefix('results')->group(function () {
         Route::get('/', [TopsisResultController::class, 'index'])->name('results.index')->middleware(['auth', 'verified']);
-        // Detail Perhitungan
-        Route::get('/{id?}', [TopsisResultController::class, 'show'])->name('results.show')->middleware(['auth', 'verified']);
-        Route::get('{id?}/supplier/{supplier?}/calculation', [TopsisResultController::class, 'supplierCalculation'])->name('results.supplier-calculation');
-
+        
+        // Specific routes MUST come before generic dynamic routes
         Route::get('/{id}/export', [TopsisResultController::class, 'export'])->name('results.export')->middleware(['auth', 'verified']);
+        Route::get('{id?}/supplier/{supplier?}/calculation', [TopsisResultController::class, 'supplierCalculation'])->name('results.supplier-calculation')->middleware(['auth', 'verified']);
+        
+        // Generic dynamic route should be LAST
+        Route::get('/{id?}', [TopsisResultController::class, 'show'])->name('results.show')->middleware(['auth', 'verified']);
     });
 
     // Histori Analisis

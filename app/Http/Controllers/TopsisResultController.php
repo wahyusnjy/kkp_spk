@@ -171,6 +171,52 @@ class TopsisResultController extends Controller
         return view('pages.result.history', compact('assessments', 'assessment', 'results', 'assessment_id'));
     }
 
+    public function export($id)
+    {
+        // Load assessment with all relationships
+        $assessment = Assessment::with([
+            'material',
+            'scores.supplier',
+            'scores.kriteria',
+            'topsisResults.supplier'
+        ])->findOrFail($id);
+        
+        // Get TOPSIS calculation steps if completed
+        $calculationSteps = null;
+        if ($assessment->topsisResults->count() > 0) {
+            $topsisService = new \App\Services\TopsisService();
+            $calculationSteps = $topsisService->getCalculationSteps($id);
+        }
+        
+        // Group scores by supplier
+        $scoresBySupplier = $assessment->scores->groupBy('supplier_id');
+        
+        // Statistics
+        $statistics = [
+            'total_suppliers' => $scoresBySupplier->count(),
+            'total_criteria' => $assessment->scores->groupBy('kriteria_id')->count(),
+            'total_score' => $assessment->scores->sum('score'),
+            'average_score' => $assessment->scores->avg('score') ?? 0,
+            'max_score' => $assessment->scores->max('score') ?? 0,
+            'min_score' => $assessment->scores->min('score') ?? 0,
+        ];
+        
+        $exportDate = now();
+        
+        $data = [
+            'assessment' => $assessment,
+            'scoresBySupplier' => $scoresBySupplier,
+            'statistics' => $statistics,
+            'calculationSteps' => $calculationSteps,
+            'exportDate' => $exportDate,
+        ];
+        
+        $pdf = PDF::loadView('exports.assessment-detailed-pdf', $data)
+            ->setPaper('a4', 'landscape');
+        
+        return $pdf->download("hasil-detail-assessment-{$assessment->id}.pdf");
+    }
+
     public function exportPDF($id)
     {
         $assessment = Assessment::with(['topsisResults.supplier'])->findOrFail($id);
