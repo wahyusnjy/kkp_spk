@@ -242,7 +242,7 @@ class MaterialSeeder extends Seeder
                 'supplier_id' => 30,
                 'nama_material' => 'SPAC.CAM SHAFT135/155 (PIPA SCH 80 DIA 1 INCH)',
                 'jenis_logam' => 'besi',
-                'grade' => null,
+                'grade' => '-',
                 'spesifikasi_teknis' => 'SPAC.CAM SHAFT135/155',
                 'harga_per_kg' => 5204.0
             ],
@@ -250,7 +250,7 @@ class MaterialSeeder extends Seeder
                 'supplier_id' => 30,
                 'nama_material' => 'SPACER CAM SHAFT LY (PIPA SCH 80 DIA 1 INCH)',
                 'jenis_logam' => 'besi',
-                'grade' => null,
+                'grade' => '-',
                 'spesifikasi_teknis' => 'SPACER CAM SHAFT LY',
                 'harga_per_kg' => 6723.0
             ],
@@ -258,7 +258,7 @@ class MaterialSeeder extends Seeder
                 'supplier_id' => 30,
                 'nama_material' => 'SPACER CAM SHAFT 300 (PIPA SCH 80 DIA 1 1/4 INCH)',
                 'jenis_logam' => 'besi',
-                'grade' => null,
+                'grade' => '-',
                 'spesifikasi_teknis' => 'SPACER CAM SHAFT 300',
                 'harga_per_kg' => 6405.0
             ],
@@ -266,7 +266,7 @@ class MaterialSeeder extends Seeder
                 'supplier_id' => 30,
                 'nama_material' => 'SPACER ST.SHAFT 300 (PIPA SCH 80 DIA 1 1/4 INCH)',
                 'jenis_logam' => 'besi',
-                'grade' => null,
+                'grade' => '-',
                 'spesifikasi_teknis' => 'SPACER ST.SHAFT 300',
                 'harga_per_kg' => 12065.0
             ],
@@ -306,7 +306,7 @@ class MaterialSeeder extends Seeder
                 'supplier_id' => 30,
                 'nama_material' => 'SLEEVE, GOVERNOR (PO DI KERJAKAN DI GAP)',
                 'jenis_logam' => 'baja',
-                'grade' => null,
+                'grade' => '-',
                 'spesifikasi_teknis' => 'SLEEVE, GOVERNOR',
                 'harga_per_kg' => 10635.0
             ],
@@ -314,7 +314,7 @@ class MaterialSeeder extends Seeder
                 'supplier_id' => 30,
                 'nama_material' => 'PIN, PISTON (PO DI KERJAKAN DI GAP)',
                 'jenis_logam' => 'baja',
-                'grade' => null,
+                'grade' => '-',
                 'spesifikasi_teknis' => 'PIN, PISTON',
                 'harga_per_kg' => 13846.0
             ],
