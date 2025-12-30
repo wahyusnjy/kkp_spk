@@ -14,149 +14,335 @@ class MaterialSeeder extends Seeder
     public function run(): void
     {
         $materials = [
-            // Supplier 1 - PT. Logam Jaya Abadi
-            [
-                'supplier_id' => 1,
-                'nama_material' => 'Baja Karbon Plate A36',
-                'jenis_logam' => 'baja',
-                'grade' => 'A36',
-                'spesifikasi_teknis' => 'Tebal: 10-50mm, Yield Strength: 250 MPa, Tensile Strength: 400-550 MPa',
-                'harga_per_kg' => 12500.00
-            ],
-            [
-                'supplier_id' => 1,
-                'nama_material' => 'Stainless Steel Sheet 304',
-                'jenis_logam' => 'stainless_steel',
-                'grade' => '304',
-                'spesifikasi_teknis' => 'Tebal: 0.5-3mm, Finish: 2B, Corrosion Resistance: Excellent',
-                'harga_per_kg' => 45000.00
-            ],
-            [
-                'supplier_id' => 1,
-                'nama_material' => 'Baja Structural Beam',
-                'jenis_logam' => 'baja',
-                'grade' => 'A992',
-                'spesifikasi_teknis' => 'Profile: H-Beam, Size: 100x100mm to 400x400mm',
-                'harga_per_kg' => 13500.00
-            ],
-
-            // Supplier 2 - CV. Aluminium Prima
-            [
-                'supplier_id' => 2,
-                'nama_material' => 'Aluminium Sheet 6061',
-                'jenis_logam' => 'aluminium',
-                'grade' => '6061-T6',
-                'spesifikasi_teknis' => 'Tebal: 1-12mm, Temper: T6, Anodized Finish',
-                'harga_per_kg' => 38000.00
-            ],
-            [
-                'supplier_id' => 2,
-                'nama_material' => 'Aluminium Extrusion Profile',
-                'jenis_logam' => 'aluminium',
-                'grade' => '6063-T5',
-                'spesifikasi_teknis' => 'Profile: Various shapes, Surface: Mill finish',
-                'harga_per_kg' => 35000.00
-            ],
-            [
-                'supplier_id' => 2,
-                'nama_material' => 'Kuningan Sheet C2600',
-                'jenis_logam' => 'kuningan',
-                'grade' => 'C2600',
-                'spesifikasi_teknis' => 'Tebal: 0.3-2mm, Excellent machinability',
-                'harga_per_kg' => 85000.00
-            ],
-
-            // Supplier 3 - PT. Tembaga Mulia
-            [
-                'supplier_id' => 3,
-                'nama_material' => 'Tembaga Pipe ASTM B88',
-                'jenis_logam' => 'tembaga',
-                'grade' => 'C12200',
-                'spesifikasi_teknis' => 'Diameter: 15-100mm, Type: K/L/M, For plumbing applications',
-                'harga_per_kg' => 120000.00
-            ],
-            [
-                'supplier_id' => 3,
-                'nama_material' => 'Tembaga Busbar',
-                'jenis_logam' => 'tembaga',
-                'grade' => 'C11000',
-                'spesifikasi_teknis' => 'Size: 3mm x 25mm to 10mm x 100mm, High conductivity',
-                'harga_per_kg' => 115000.00
-            ],
-            [
-                'supplier_id' => 3,
-                'nama_material' => 'Kuningan Rod C3604',
-                'jenis_logam' => 'kuningan',
-                'grade' => 'C3604',
-                'spesifikasi_teknis' => 'Diameter: 5-50mm, Free cutting brass',
-                'harga_per_kg' => 92000.00
-            ],
-
-            // Supplier 4 - UD. Besi Kuat
-            [
-                'supplier_id' => 4,
-                'nama_material' => 'Besi Beton Polos',
-                'jenis_logam' => 'besi',
-                'grade' => 'BJTP 24',
-                'spesifikasi_teknis' => 'Diameter: 6-32mm, Yield Strength: 240 MPa',
-                'harga_per_kg' => 10500.00
-            ],
-            [
-                'supplier_id' => 4,
-                'nama_material' => 'Besi Beton Ulir',
-                'jenis_logam' => 'besi',
-                'grade' => 'BJTS 40',
-                'spesifikasi_teknis' => 'Diameter: 10-32mm, Yield Strength: 400 MPa',
-                'harga_per_kg' => 11200.00
-            ],
-
-            // Supplier 5 - PT. Stainless Steel Indonesia
-            [
-                'supplier_id' => 5,
-                'nama_material' => 'Stainless Steel 316L',
-                'jenis_logam' => 'stainless_steel',
-                'grade' => '316L',
-                'spesifikasi_teknis' => 'Excellent corrosion resistance, Marine grade',
-                'harga_per_kg' => 68000.00
-            ],
-            [
-                'supplier_id' => 5,
-                'nama_material' => 'Stainless Steel 430',
-                'jenis_logam' => 'stainless_steel',
-                'grade' => '430',
-                'spesifikasi_teknis' => 'Magnetic, Good corrosion resistance, Cost effective',
-                'harga_per_kg' => 38000.00
-            ],
-
-            // Supplier 6 - CV. Magnesium Teknik
-            [
-                'supplier_id' => 6,
-                'nama_material' => 'Magnesium Alloy AZ91D',
-                'jenis_logam' => 'magnesium',
-                'grade' => 'AZ91D',
-                'spesifikasi_teknis' => 'Die casting alloy, Good corrosion resistance',
-                'harga_per_kg' => 95000.00
-            ],
-
-            // Supplier 7 - PT. Titanium Nusantara
-            [
-                'supplier_id' => 7,
-                'nama_material' => 'Titanium Grade 2',
-                'jenis_logam' => 'titanium',
-                'grade' => 'Grade 2',
-                'spesifikasi_teknis' => 'Commercial pure titanium, Excellent corrosion resistance',
-                'harga_per_kg' => 450000.00
-            ],
-            [
-                'supplier_id' => 7,
-                'nama_material' => 'Titanium Grade 5',
-                'jenis_logam' => 'titanium',
-                'grade' => 'Grade 5 (6Al-4V)',
-                'spesifikasi_teknis' => 'Aerospace grade, High strength-to-weight ratio',
-                'harga_per_kg' => 680000.00
-            ]
-        ];
-
+        [
+            'supplier_id' => 24,
+            'nama_material' => 'S45C DIA 6.3',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => '172200-61220(PIN, GOVERNOR WEIGHT)',
+            'harga_per_kg' => 1758.0
+        ],
+        [
+            'supplier_id' => 24,
+            'nama_material' => 'S45C DIA 6.3',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => '174100-61220(PIN, GOVERNOR WEIGHT)',
+            'harga_per_kg' => 2063.0
+        ],
+        [
+            'supplier_id' => 8,
+            'nama_material' => 'S45C DIA 10.15',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'GOV.LVR.SHAFT 55/65',
+            'harga_per_kg' => 10169.0
+        ],
+        [
+            'supplier_id' => 8,
+            'nama_material' => 'S45C DIA 10.15',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'GOV.LVR.SHAFT 75/155',
+            'harga_per_kg' => 9930.0
+        ],
+        [
+            'supplier_id' => 8,
+            'nama_material' => 'S45C DIA 10.15',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'GOV.LVR.SHAFT270/300',
+            'harga_per_kg' => 11195.0
+        ],
+        [
+            'supplier_id' => 8,
+            'nama_material' => 'S45C DIA 10.15',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'SHAFT,LEVER 55/65',
+            'harga_per_kg' => 5738.0
+        ],
+        [
+            'supplier_id' => 8,
+            'nama_material' => 'S45C DIA 10.15',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'PIN,STR.SHAFT270/300',
+            'harga_per_kg' => 9039.0
+        ],
+        [
+            'supplier_id' => 8,
+            'nama_material' => 'S45C DIA 10.15',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'F.O LIMITER TF120I',
+            'harga_per_kg' => 4254.0
+        ],
+        [
+            'supplier_id' => 1,
+            'nama_material' => 'S45C DIA 36',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'IDLE SHAFT 75/155',
+            'harga_per_kg' => 22982.0
+        ],
+        [
+            'supplier_id' => 1,
+            'nama_material' => 'S45C DIA 36',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'IDLE SHAFT 70/105LY',
+            'harga_per_kg' => 23859.0
+        ],
+        [
+            'supplier_id' => 1,
+            'nama_material' => 'PLAT S45C',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'WASHER NUT M10 ALT 1',
+            'harga_per_kg' => 6899.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 8',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'ST.BOLT, AC M8 TF85',
+            'harga_per_kg' => 4303.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 8',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'BOLT, AIR CLEANER <105/120NL>',
+            'harga_per_kg' => 5297.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 10',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'COLLAR, FO TANK (40)\'',
+            'harga_per_kg' => 1537.0
+        ],
+        [
+            'supplier_id' => 8,
+            'nama_material' => 'ST41 DIA 10',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'STUD BOLT M10X1.5',
+            'harga_per_kg' => 2117.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 12',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'COLLAR, SPACER',
+            'harga_per_kg' => 2220.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 12',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'GUIDE(A,DIPSTICK',
+            'harga_per_kg' => 3116.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST 41 DIA 12',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'PIPE KNOCK 300',
+            'harga_per_kg' => 7647.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 16',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'COLLAR, FO TANK (50)\'',
+            'harga_per_kg' => 3087.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 30',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => '104300-76460(NUT, START GEAR)',
+            'harga_per_kg' => 5461.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 35',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => '10395G-28450(WASHER, GEAR)',
+            'harga_per_kg' => 3117.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 58',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'NUT CAM SHAFT TF300',
+            'harga_per_kg' => 9476.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'HEXA 10',
+            'jenis_logam' => 'baja',
+            'grade' => 'HEXA 10',
+            'spesifikasi_teknis' => '105212-01910(BOLT, SPACER)',
+            'harga_per_kg' => 3762.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'HEXA 17',
+            'jenis_logam' => 'baja',
+            'grade' => 'HEXA 17',
+            'spesifikasi_teknis' => 'CAP,NUT 10 (LIMITER)',
+            'harga_per_kg' => 3020.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'HEXA 17',
+            'jenis_logam' => 'baja',
+            'grade' => 'HEXA 17',
+            'spesifikasi_teknis' => 'NUT,ENG LIFT 105/115',
+            'harga_per_kg' => 5019.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'HEXA 19',
+            'jenis_logam' => 'baja',
+            'grade' => 'HEXA 19',
+            'spesifikasi_teknis' => 'NUT, ENG. LIFT 135/155',
+            'harga_per_kg' => 6063.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'HEXA 19',
+            'jenis_logam' => 'baja',
+            'grade' => 'HEXA 19',
+            'spesifikasi_teknis' => 'BOLT, LIFTING',
+            'harga_per_kg' => 9240.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'HEXA 22',
+            'jenis_logam' => 'baja',
+            'grade' => 'HEXA 22',
+            'spesifikasi_teknis' => 'NUT,ENG LIFT TS230R',
+            'harga_per_kg' => 18943.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'PIPA SCH 80 DIA 1 INCH',
+            'jenis_logam' => 'besi',
+            'grade' => '-',
+            'spesifikasi_teknis' => 'SPAC.CAM SHAFT135/155',
+            'harga_per_kg' => 5204.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'PIPA SCH 80 DIA 1 INCH',
+            'jenis_logam' => 'besi',
+            'grade' => '-',
+            'spesifikasi_teknis' => 'SPACER CAM SHAFT LY',
+            'harga_per_kg' => 6723.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'PIPA SCH 80 DIA 1 1/4 INCH',
+            'jenis_logam' => 'besi',
+            'grade' => '-',
+            'spesifikasi_teknis' => 'SPACER CAM SHAFT 300',
+            'harga_per_kg' => 6405.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'PIPA SCH 80 DIA 1 1/4 INCH',
+            'jenis_logam' => 'besi',
+            'grade' => '-',
+            'spesifikasi_teknis' => 'SPACER ST.SHAFT 300',
+            'harga_per_kg' => 12065.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'DAR YANMAR',
+            'jenis_logam' => 'baja',
+            'grade' => '-',
+            'spesifikasi_teknis' => 'CYL.REAR COVER TF300',
+            'harga_per_kg' => 3692.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 17',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'SPEED SET BOLT(NO.2)',
+            'harga_per_kg' => 12981.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 8',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => '',
+            'harga_per_kg' => 0.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'PIPA STKM 11A DIA 19 TEBAL 0,8',
+            'jenis_logam' => 'baja',
+            'grade' => 'STKM',
+            'spesifikasi_teknis' => 'GRIP',
+            'harga_per_kg' => 0.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 16 (BESI BETON)',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'SHAFT',
+            'harga_per_kg' => 0.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'ST41 DIA 17',
+            'jenis_logam' => 'baja',
+            'grade' => 'ST41',
+            'spesifikasi_teknis' => 'RING',
+            'harga_per_kg' => 0.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'PO DI KERJAKAN DI GAP',
+            'jenis_logam' => 'baja',
+            'grade' => '-',
+            'spesifikasi_teknis' => 'SLEEVE, GOVERNOR',
+            'harga_per_kg' => 10635.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'PO DI KERJAKAN DI GAP',
+            'jenis_logam' => 'baja',
+            'grade' => '-',
+            'spesifikasi_teknis' => 'PIN, PISTON',
+            'harga_per_kg' => 13846.0
+        ],
+        [
+            'supplier_id' => 30,
+            'nama_material' => 'PLAT S45C',
+            'jenis_logam' => 'baja',
+            'grade' => 'S45C',
+            'spesifikasi_teknis' => 'WASHER NUT M10 ALT 1',
+            'harga_per_kg' => 6899.0
+        ],
+    ];
         DB::table('materials')->insert($materials);
 
         $this->command->info('Data materials berhasil ditambahkan!');

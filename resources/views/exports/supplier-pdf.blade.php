@@ -1,312 +1,346 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Laporan Supplier</title>
     <style>
-        body {
-            font-family: 'DejaVu Sans', sans-serif;
-            font-size: 12px;
-            color: #333;
-            background: white;
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
         }
         
-        .header {
+        body { 
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12px; 
+            color: #000;
+            background: white;
+            padding: 20px;
+            line-height: 1.4;
+        }
+        
+        /* Header dengan logo dan informasi perusahaan */
+        .company-header {
             text-align: center;
             margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #1e40af;
+            border-bottom: 3px solid #000;
+            padding-bottom: 15px;
         }
         
-        .header h1 {
-            color: #1e40af;
-            margin-bottom: 5px;
-            font-size: 24px;
-        }
-        
-        .header .subtitle {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .summary {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f8fafc;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .summary h2 {
-            color: #1e40af;
-            font-size: 16px;
+        .logo-container {
+            width: 100%;
             margin-bottom: 10px;
+            position: relative;
         }
         
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+        .logo-left {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30%;
+            text-align: left;
         }
         
-        .summary-item {
-            padding: 12px;
-            background: white;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
+        .logo-center {
+            width: 100%;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         
-        .summary-item .label {
-            font-size: 11px;
-            color: #64748b;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        
-        .summary-item .value {
-            font-size: 20px;
+        .company-logo {
+            font-family: Arial, sans-serif;
             font-weight: bold;
-            color: #1e293b;
+            color: #000;
+            text-align: center;
         }
         
-        .summary-item .value.active { color: #059669; }
-        .summary-item .value.inactive { color: #dc2626; }
-        .summary-item .value.category { color: #7c3aed; }
+        .company-name {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 5px 0;
+            letter-spacing: 1px;
+        }
         
-        table {
+        .company-address {
+            font-size: 11px;
+            margin: 5px 0;
+            line-height: 1.3;
+        }
+        
+        .report-title {
+            text-align: center;
+            margin: 30px 0;
+            padding: 10px 0;
+        }
+        
+        .report-title h1 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+            text-decoration: underline;
+            text-transform: uppercase;
+        }
+        
+        .date-info {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 11px;
+        }
+        
+        /* Tabel di tengah */
+        .supplier-table-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 40px 0;
+        }
+        
+        .supplier-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: 0 auto;
         }
         
-        table th {
-            background-color: #1e40af;
-            color: white;
-            padding: 12px 10px;
-            text-align: left;
+        .supplier-table th {
+            border: 2px solid #000;
+            padding: 8px;
+            text-align: center;
             font-weight: bold;
             font-size: 11px;
-            border: 1px solid #1e40af;
+            background-color: #f0f0f0;
         }
         
-        table td {
-            padding: 10px;
-            border: 1px solid #e2e8f0;
-            font-size: 11px;
-            vertical-align: top;
+        .supplier-table td {
+            border: 2px solid #000;
+            padding: 6px;
+            font-size: 10px;
+            vertical-align: middle;
+            text-align: center;
         }
         
-        table tr:nth-child(even) {
-            background-color: #f8fafc;
+        .supplier-table tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
         
+        /* Status Styling */
         .status {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 10px;
+            padding: 3px 8px;
+            font-size: 9px;
             font-weight: bold;
-            min-width: 70px;
+            border-radius: 3px;
+        }
+        
+        .status.active {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Container pembungkus agar float tidak berantakan ke elemen bawahnya */
+        .signature-wrapper {
+            float: right;
+            width: 250px;
+            text-align: center;
+        }
+
+        .location-date {
+            text-align: center;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+
+        .signature-section {
+            margin-top: 10px;
+            width: 100%;
             text-align: center;
         }
         
-        .status.aktif {
-            background-color: #d1fae5;
-            color: #059669;
-            border: 1px solid #a7f3d0;
-        }
-        
-        .status.non-aktif {
-            background-color: #fee2e2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
-        }
-        
-        .footer {
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 2px solid #e2e8f0;
-            text-align: center;
-            color: #64748b;
-            font-size: 10px;
-        }
-        
-        .page-break {
-            page-break-before: always;
-        }
-        
-        .filter-info {
-            margin-bottom: 20px;
-            padding: 12px;
-            background-color: #f0f9ff;
-            border-radius: 6px;
-            border: 1px solid #bae6fd;
+        .signature-line {
+            display: inline-block;
+            width: 200px;
+            border-top: 1px solid #000;
+            margin-top: 60px;
+            padding-top: 5px;
             font-size: 11px;
+        }
+
+        .separator {
+            border-top: 1px solid #000;
+            margin: 20px 0;
+            width: 100%;
+            clear: both;
+        }
+        
+        /* Filter Info */
+        .filter-info {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            margin-bottom: 15px;
+            font-size: 10px;
         }
         
         .filter-info h3 {
-            color: #0369a1;
+            font-weight: bold;
             margin-bottom: 5px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .logo img {
-            height: 60px;
-        }
-        
-        .company-info {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .company-info h2 {
-            color: #1e40af;
-            margin: 5px 0;
-            font-size: 18px;
-        }
-        
-        .company-info p {
-            color: #666;
-            font-size: 12px;
-            margin: 2px 0;
+            font-size: 11px;
         }
         
         /* Print optimization */
         @media print {
-            .summary-item {
+            body {
+                padding: 15px;
+            }
+            
+            .supplier-table {
                 page-break-inside: avoid;
             }
             
-            table {
-                page-break-inside: auto;
-            }
-            
-            tr {
+            .signature-section {
                 page-break-inside: avoid;
-                page-break-after: auto;
-            }
-            
-            thead {
-                display: table-header-group;
-            }
-            
-            tfoot {
-                display: table-footer-group;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Logo and Company Info -->
-    <div class="logo">
-        <!-- Add your logo here if needed -->
-        <div style="height: 40px;"></div>
-    </div>
-    
-    <div class="company-info">
-        <h2>LAPORAN SUPPLIER</h2>
-        <p>Periode: {{ date('d/m/Y', strtotime($filter['start_date'] ?? 'now')) }} - {{ date('d/m/Y', strtotime($filter['end_date'] ?? 'now')) }}</p>
-        <p>Tanggal Cetak: {{ date('d/m/Y H:i:s') }}</p>
-    </div>
-    
-    @if($includeSummary)
-    <div class="summary">
-        <h2>Ringkasan Data</h2>
-        <div class="summary-grid">
-            <div class="summary-item">
-                <div class="label">Total Supplier</div>
-                <div class="value">{{ $summary['total_supplier'] }}</div>
+    <!-- Header dengan logo dan informasi perusahaan -->
+    <div class="company-header">
+        <div class="logo-container">
+            <div class="logo-left">
+                <!-- Logo perusahaan -->
+                <div class="company-logo">
+                    <img src="{{ public_path('assets/logoamesu.png') }}" height="100" alt="">
+                </div>
             </div>
-            <div class="summary-item">
-                <div class="label">Supplier Aktif</div>
-                <div class="value active">{{ $summary['active_supplier'] }}</div>
-            </div>
-            <div class="summary-item">
-                <div class="label">Supplier Non-Aktif</div>
-                <div class="value inactive">{{ $summary['inactive_supplier'] }}</div>
-            </div>
-            <div class="summary-item">
-                <div class="label">Kategori Material</div>
-                <div class="value category">{{ $summary['total_category'] }}</div>
+            
+            <div class="logo-center">
+                <!-- Nama perusahaan di tengah -->
+                <div class="company-name">PT AMESU UTAMA</div>
+                <div class="company-address">
+                    Jl. Benda No.88, RT.001/RW.003, Cikiwul,<br> 
+                    Kec. Bantar Gebang, Kota Bks, <br>
+                    Jawa Barat 17152
+                </div>
             </div>
         </div>
     </div>
-    @endif
     
+    <!-- Judul laporan -->
+    <div class="report-title">
+        <h1>LAPORAN DATA SUPPLIER</h1>
+    </div>
+    
+    <!-- Info tanggal -->
+    <div class="date-info">
+        <p>Dicetak pada: {{ date('d F Y H:i:s') }}</p>
+        <p>Periode: {{ date('d/m/Y', strtotime($filter['start_date'] ?? 'now')) }} - {{ date('d/m/Y', strtotime($filter['end_date'] ?? 'now')) }}</p>
+    </div>
+    
+    <!-- Filter Info -->
     @if(!empty(array_filter($filter)))
     <div class="filter-info">
         <h3>Filter yang diterapkan:</h3>
         <div>
             @if(!empty($filter['status']))
-                <strong>Status:</strong> {{ implode(', ', $filter['status']) }} | 
-            @endif
-            @if($filter['start_date'] && $filter['end_date'])
-                <strong>Periode:</strong> {{ date('d/m/Y', strtotime($filter['start_date'])) }} - {{ date('d/m/Y', strtotime($filter['end_date'])) }} | 
+                <strong>Status:</strong> {{ implode(', ', $filter['status']) }}
+                @if($filter['kategori_material'] || ($filter['start_date'] && $filter['end_date'])) | @endif
             @endif
             @if($filter['kategori_material'])
                 <strong>Kategori:</strong> {{ $filter['kategori_material'] }}
+                @if($filter['start_date'] && $filter['end_date']) | @endif
+            @endif
+            @if($filter['start_date'] && $filter['end_date'])
+                <strong>Periode:</strong> {{ date('d/m/Y', strtotime($filter['start_date'])) }} - {{ date('d/m/Y', strtotime($filter['end_date'])) }}
             @endif
         </div>
     </div>
     @endif
     
-    <table>
-        <thead>
-            <tr>
-                <th>Kode Supplier</th>
-                <th>Nama Supplier</th>
-                <th>Kategori</th>
-                <th>Alamat</th>
-                <th>Kontak</th>
-                <th>Status</th>
-                <th>Bergabung</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($suppliers as $supplier)
-            <tr>
-                <td><strong>{{ $supplier->kode_supplier }}</strong></td>
-                <td>{{ $supplier->nama_supplier }}</td>
-                <td>{{ $supplier->kategori_material ?? 'Umum' }}</td>
-                <td>{{ $supplier->alamat ?? '-' }}</td>
-                <td>
-                    @if($supplier->telepon)
-                        {{ $supplier->telepon }}
-                    @else
-                        -
-                    @endif
-                    @if($supplier->email)
-                        <br><small>{{ $supplier->email }}</small>
-                    @endif
-                </td>
-                <td>
-                    <span class="status {{ $supplier->status == 'aktif' ? 'aktif' : 'non-aktif' }}">
-                        {{ $supplier->status == 'aktif' ? 'Aktif' : 'Non-Aktif' }}
-                    </span>
-                </td>
-                <td>{{ \Carbon\Carbon::parse($supplier->created_at)->format('d/m/Y') }}</td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="7" style="text-align: center; padding: 30px; color: #64748b; font-style: italic;">
-                    Tidak ada data supplier ditemukan
-                </td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
-    
-    <div class="footer">
-        Laporan ini dibuat secara otomatis oleh sistem pada {{ date('d/m/Y H:i:s') }}<br>
-        Halaman {{ $suppliers->count() > 0 ? '1 dari 1' : '1' }}
+    <!-- Tabel Supplier -->
+    <div class="supplier-table-container">
+        <table class="supplier-table">
+            <thead>
+                <tr>
+                    <th style="width: 12%;">KODE SUPPLIER</th>
+                    <th style="width: 20%;">NAMA SUPPLIER</th>
+                    <th style="width: 15%;">KATEGORI</th>
+                    <th style="width: 20%;">ALAMAT</th>
+                    <th style="width: 15%;">KONTAK</th>
+                    <th style="width: 8%;">STATUS</th>
+                    <th style="width: 10%;">BERGABUNG</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($suppliers as $supplier)
+                <tr>
+                    <td><strong>{{ $supplier->kode_supplier }}</strong></td>
+                    <td>{{ $supplier->nama_supplier }}</td>
+                    <td>{{ $supplier->kategori_material ?? 'Umum' }}</td>
+                    <td>{{ $supplier->alamat ?? '-' }}</td>
+                    <td>
+                        @if($supplier->telepon)
+                            {{ $supplier->telepon }}
+                        @elseif($supplier->email)
+                            <br><small>{{ $supplier->email }}</small>
+                        @elseif($supplier->kontak)
+                            <br><small>{{ $supplier->kontak }}</small>
+                        @else
+                            -
+                        @endif
+                    </td>
+                    <td>
+                        @php
+                            $statusClass = $supplier->status == 'active' ? 'active' : 'inactive';
+                            $statusText = $supplier->status == 'active' ? 'Active' : 'Non Active';
+                        @endphp
+                        <span class="status {{ $statusClass }}">
+                            {{ $statusText }}
+                        </span>
+                    </td>
+                    <td>{{ \Carbon\Carbon::parse($supplier->created_at)->format('d/m/Y') }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 20px; color: #6c757d; font-style: italic;">
+                        Tidak ada data supplier ditemukan
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
+    
+    <div class="separator"></div>
+
+    <div class="signature-wrapper">
+        
+        <div class="location-date">
+            <p>Bekasi, {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
+            Head QC
+        </div>
+        
+        <div class="signature-section">
+            <div class="signature-block">
+                <div class="signature-placeholder"></div>
+                
+                <div style="margin-top: 50px;">
+                    <div class="signature-line">
+                        (Wahyu Hidayat)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="clear: both;"></div>
+    
 </body>
 </html>

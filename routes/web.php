@@ -117,8 +117,21 @@
             Route::get('/{assessmentId}/export-detailed', [ReportController::class, 'exportDetailedAssessment'])->name('reports.export.assessment.detailed')->middleware(['auth', 'verified']);
         });
         
+        // Laporan Material
+        Route::prefix('materials')->group(function () {
+            Route::get('/', [ReportController::class, 'materials'])->name('reports.materials')->middleware(['auth', 'verified']);
+            Route::get('/filter', [ReportController::class, 'material_filter'])->name('reports.materials.filter')->middleware(['auth', 'verified']);
+            Route::get('/export', [ReportController::class, 'exportMaterials'])->name('reports.materials.export')->middleware(['auth', 'verified']);
+            Route::post('/import', [ReportController::class, 'importMaterials'])->name('reports.materials.import')->middleware(['auth', 'verified']);
+            Route::get('/template', [ReportController::class, 'downloadMaterialTemplate'])->name('reports.materials.template')->middleware(['auth', 'verified']);
+            Route::get('/stats', [ReportController::class, 'material_stats'])->name('reports.materials.stats')->middleware(['auth', 'verified']);
+        });
+        
         // Laporan Kriteria
         Route::get('/kriteria', [ReportController::class, 'kriteriaReport'])->name('reports.kriteria')->middleware(['auth', 'verified']);
+        
+        // Laporan Material (Simple Page)
+        Route::get('/material', [ReportController::class, 'materialReport'])->name('reports.material')->middleware(['auth', 'verified']);
         
         // Executive Summary
         Route::get('/executive-summary', [ReportController::class, 'executiveSummary'])->name('reports.executive-summary')->middleware(['auth', 'verified']);
@@ -128,6 +141,11 @@
         Route::get('/export/suppliers-excel', [ReportController::class, 'exportSuppliersExcel'])->name('reports.export.suppliers-excel')->middleware(['auth', 'verified']);
         Route::get('/export/results-pdf/{id}', [ReportController::class, 'exportResultsPDF'])->name('reports.export.results-pdf')->middleware(['auth', 'verified']);
         Route::get('/export/results-excel/{id}', [ReportController::class, 'exportResultsExcel'])->name('reports.export.results-excel')->middleware(['auth', 'verified']);
+        
+        // Test Material PDF
+        Route::get('/test-material-pdf', function () {
+            return view('test-material-pdf');
+        })->name('reports.test-material-pdf')->middleware(['auth', 'verified']);
     });
 
     Route::middleware(['auth'])->group(function () {

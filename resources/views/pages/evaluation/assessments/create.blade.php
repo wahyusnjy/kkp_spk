@@ -1,4 +1,68 @@
 <x-layouts.app :title="__('Tambah Assessment')">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    
+    <style>
+        /* Select2 Dark Mode Styling */
+        .select2-container--bootstrap-5 .select2-selection {
+            background-color: #1f2937 !important;
+            border-color: #374151 !important;
+            color: #ffffff !important;
+            min-height: 48px;
+        }
+        
+        .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+            color: #ffffff !important;
+            line-height: 48px;
+            padding-left: 12px;
+        }
+        
+        .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow {
+            height: 46px;
+        }
+        
+        .select2-container--bootstrap-5.select2-container--focus .select2-selection,
+        .select2-container--bootstrap-5.select2-container--open .select2-selection {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .select2-dropdown {
+            background-color: #1f2937 !important;
+            border-color: #374151 !important;
+        }
+        
+        .select2-container--bootstrap-5 .select2-dropdown .select2-search__field {
+            background-color: #111827 !important;
+            border-color: #374151 !important;
+            color: #ffffff !important;
+        }
+        
+        .select2-container--bootstrap-5 .select2-results__option {
+            color: #d1d5db !important;
+            padding: 8px 12px;
+        }
+        
+        .select2-container--bootstrap-5 .select2-results__option--highlighted {
+            background-color: #3b82f6 !important;
+            color: #ffffff !important;
+        }
+        
+        .select2-container--bootstrap-5 .select2-results__option--selected {
+            background-color: #374151 !important;
+        }
+        
+        .select2-container--bootstrap-5 .select2-results__option--disabled {
+            color: #6b7280 !important;
+            background-color: #1f2937 !important;
+        }
+        
+        .select2-container--bootstrap-5 .select2-selection__placeholder {
+            color: #9ca3af !important;
+        }
+    </style>
+    
     <div class="flex h-full w-full flex-1 flex-col gap-6 rounded-xl">
         <!-- Header Section -->
         <div class="flex justify-between items-center">
@@ -79,7 +143,7 @@
                                         <i class="fas fa-cube mr-2 text-blue-400"></i>
                                         Material *
                                     </label>
-                                    <select name="material_id" required
+                                    <select name="material_id" required id="materialSelect"
                                             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition hover:border-gray-600">
                                         <option value="" class="bg-gray-800">Pilih Material</option>
                                         @foreach($materials as $material)
@@ -381,13 +445,39 @@
             
             // Initialize validation for new inputs
             initializeValidationForElement(supplierCard);
+            
+            // Initialize Select2 for the new supplier select
+            const newSelect = supplierCard.querySelector('.supplier-select');
+            $(newSelect).select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Pilih Supplier',
+                allowClear: true,
+                width: '100%'
+            });
+            
+            // Add change event listener
+            $(newSelect).on('change', function() {
+                updateSupplierOptions();
+            });
+            
+            // Update all supplier options
+            updateSupplierOptions();
         }
 
         function removeSupplier(button) {
             const card = button.closest('.supplier-card');
             if (document.querySelectorAll('.supplier-card').length > 1) {
+                // Destroy Select2 before removing
+                const select = card.querySelector('.supplier-select');
+                if ($(select).data('select2')) {
+                    $(select).select2('destroy');
+                }
+                
                 card.remove();
                 updateSupplierNumbers();
+                
+                // Update options after removal
+                updateSupplierOptions();
             } else {
                 showAlert('Minimal harus ada 1 supplier', 'warning');
             }
@@ -539,6 +629,85 @@
                 });
             });
         }
+        
+        // Get selected supplier IDs
+        function getSelectedSupplierIds() {
+            const selectedIds = [];
+            document.querySelectorAll('.supplier-select').forEach(select => {
+                if (select.value) {
+                    selectedIds.push(select.value);
+                }
+            });
+            return selectedIds;
+        }
+        
+        // Update supplier options to disable selected ones
+        function updateSupplierOptions() {
+            const selectedIds = getSelectedSupplierIds();
+            
+            document.querySelectorAll('.supplier-select').forEach(select => {
+                const currentValue = select.value;
+                
+                // Destroy Select2 before updating options
+                if ($(select).data('select2')) {
+                    $(select).select2('destroy');
+                }
+                
+                // Update options
+                $(select).find('option').each(function() {
+                    const optionValue = $(this).val();
+                    if (optionValue && optionValue !== currentValue && selectedIds.includes(optionValue)) {
+                        $(this).prop('disabled', true);
+                    } else {
+                        $(this).prop('disabled', false);
+                    }
+                });
+                
+                // Reinitialize Select2
+                $(select).select2({
+                    theme: 'bootstrap-5',
+                    placeholder: 'Pilih Supplier',
+                    allowClear: true,
+                    width: '100%'
+                });
+            });
+        }
+        
+        // Initialize Select2 for all supplier selects
+        function initializeSelect2() {
+            // Initialize Material Select
+            $('#materialSelect').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Pilih Material',
+                allowClear: true,
+                width: '100%'
+            });
+            
+            // Initialize all supplier selects
+            $('.supplier-select').each(function() {
+                $(this).select2({
+                    theme: 'bootstrap-5',
+                    placeholder: 'Pilih Supplier',
+                    allowClear: true,
+                    width: '100%'
+                });
+                
+                // Add change event listener
+                $(this).on('change', function() {
+                    updateSupplierOptions();
+                });
+            });
+        }
+    </script>
+    
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 on page load
+            initializeSelect2();
+        });
     </script>
 
     <style>

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Exports\SupplierReportExport;
+use App\Exports\MaterialReportExport;
+use App\Exports\MaterialTemplateExport;
+use App\Imports\MaterialImport;
 use App\Models\Kriteria;
 use App\Models\Material;
 use App\Models\Supplier;
@@ -566,6 +569,56 @@ class ReportController extends Controller
     }
     
     /**
+     * Laporan Material Lengkap (Simple Page)
+     */
+    public function materialReport(Request $request)
+    {
+        $format = $request->input('format');
+        
+        // If no format, show the page
+        if (!$format) {
+            return view('pages.reports.material');
+        }
+        
+        // Get all materials with relationships
+        $materials = Material::with('supplier')->get();
+        
+        // Summary statistics
+        $summary = [
+            'total_material' => $materials->count(),
+            'total_jenis_logam' => $materials->whereNotNull('jenis_logam')->unique('jenis_logam')->count(),
+            'harga_tertinggi' => $materials->max('harga_per_kg') ?? 0,
+            'harga_terendah' => $materials->min('harga_per_kg') ?? 0,
+            'total_suppliers' => $materials->whereNotNull('supplier_id')->unique('supplier_id')->count(),
+        ];
+        
+        $filename = 'laporan-material-lengkap-' . date('Y-m-d-His');
+        
+        if ($format === 'pdf') {
+            $filename .= '.pdf';
+            
+            $data = [
+                'materials' => $materials,
+                'summary' => $summary,
+                'includeSummary' => true,
+                'filter' => [],
+                'exportDate' => now(),
+            ];
+            
+            $pdf = PDF::loadView('exports.material-pdf', $data);
+            return $pdf->download($filename);
+            
+        } else {
+            $filename .= '.xlsx';
+            
+            return Excel::download(
+                new \App\Exports\MaterialReportExport($materials, $summary, true),
+                $filename
+            );
+        }
+    }
+    
+    /**
      * Executive Summary Report
      */
     public function executiveSummary(Request $request)
@@ -639,6 +692,208 @@ class ReportController extends Controller
             );
         }
     }
+    
+    // =========================== Material Section Report  =========================== 
+    // Laporan Material
+    public function materials(Request $request)
+    {
+        $jenisLogam = $request->input('jenis_logam');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $supplierId = $request->input('supplier_id');
+        
+        // Start query
+        $query = Material::with('supplier');
+        
+        // Apply jenis logam filter
+        if ($jenisLogam) {
+            $query->where('jenis_logam', $jenisLogam);
+        }
+        
+        // Apply supplier filter
+        if ($supplierId) {
+            $query->where('supplier_id', $supplierId);
+        }
+        
+        // Apply date range filter
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            $query->whereDate('created_at', '>=', $startDate);
+        } elseif ($endDate) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+        
+        // Get materials with pagination
+        $materials = $query->orderBy('created_at', 'desc')->paginate(20);
+        
+        // Get summary data
+        $summary = [
+            'total_material' => Material::count(),
+            'total_jenis_logam' => Material::distinct('jenis_logam')->count('jenis_logam'),
+            'harga_tertinggi' => Material::max('harga_per_kg') ?? 0,
+            'harga_terendah' => Material::min('harga_per_kg') ?? 0,
+        ];
+        
+        // Get jenis logam list for filter dropdown
+        $jenisLogamList = Material::select('jenis_logam')
+            ->whereNotNull('jenis_logam')
+            ->distinct()
+            ->pluck('jenis_logam')
+            ->filter()
+            ->values()
+            ->toArray();
+        
+        // Get supplier list for filter dropdown
+        $supplierList = Supplier::orderBy('nama_supplier')->get();
+            
+        return view('pages.evaluation.reports.material', compact('materials', 'summary', 'jenisLogamList', 'supplierList'));
+    }
+
+    public function material_filter(Request $request)
+    {
+        // Build query string from request
+        $queryParams = [];
+        
+        if ($request->has('jenis_logam')) {
+            $queryParams[] = 'jenis_logam=' . urlencode($request->jenis_logam);
+        }
+        
+        if ($request->has('supplier_id')) {
+            $queryParams[] = 'supplier_id=' . urlencode($request->supplier_id);
+        }
+        
+        if ($request->has('start_date')) {
+            $queryParams[] = 'start_date=' . urlencode($request->start_date);
+        }
+        
+        if ($request->has('end_date')) {
+            $queryParams[] = 'end_date=' . urlencode($request->end_date);
+        }
+        
+        $queryString = !empty($queryParams) ? '?' . implode('&', $queryParams) : '';
+        
+        return redirect()->route('reports.materials') . $queryString;
+    }
+
+    public function exportMaterials(Request $request) {
+        $format = $request->input('format', 'excel');
+        $includeSummary = $request->has('include_summary');
+        
+        // Get filtered data (same logic as index)
+        $jenisLogam = $request->input('jenis_logam');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $supplierId = $request->input('supplier_id');
+        
+        $query = Material::with('supplier');
+        
+        if ($jenisLogam) {
+            $query->where('jenis_logam', $jenisLogam);
+        }
+        
+        if ($supplierId) {
+            $query->where('supplier_id', $supplierId);
+        }
+        
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            $query->whereDate('created_at', '>=', $startDate);
+        } elseif ($endDate) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+        
+        $materials = $query->orderBy('created_at', 'desc')->get();
+        
+        // Get summary for export
+        $summary = [
+            'total_material' => Material::count(),
+            'total_jenis_logam' => Material::distinct('jenis_logam')->count('jenis_logam'),
+            'harga_tertinggi' => Material::max('harga_per_kg') ?? 0,
+            'harga_terendah' => Material::min('harga_per_kg') ?? 0,
+        ];
+        
+        // Generate filename
+        $filename = 'laporan-material-' . date('Y-m-d-His');
+        
+        if ($format === 'pdf') {
+            $filename .= '.pdf';
+            
+            $data = [
+                'materials' => $materials,
+                'summary' => $summary,
+                'includeSummary' => $includeSummary,
+                'filter' => [
+                    'jenis_logam' => $jenisLogam,
+                    'supplier_id' => $supplierId,
+                    'start_date' => $startDate,
+                    'end_date' => $endDate,
+                ],
+            ];
+            
+            $pdf = PDF::loadView('exports.material-pdf', $data);
+            return $pdf->download($filename);
+            
+        } else {
+            $filename .= '.xlsx';
+            
+            return Excel::download(new MaterialReportExport($materials, $summary, $includeSummary), $filename);
+        }
+    }
+
+    public function importMaterials(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048'
+        ]);
+
+        try {
+            Excel::import(new MaterialImport, $request->file('file'));
+            
+            return redirect()->back()->with('success', 'Data material berhasil diimport!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal mengimport data: ' . $e->getMessage());
+        }
+    }
+
+    public function downloadMaterialTemplate()
+    {
+        $filename = 'template-import-material-' . date('Y-m-d') . '.xlsx';
+        return Excel::download(new MaterialTemplateExport, $filename);
+    }
+
+    public function material_stats()
+    {
+        // Get monthly statistics
+        $monthlyStats = Material::select(
+                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                DB::raw('COUNT(*) as total'),
+                DB::raw('AVG(harga_per_kg) as avg_price')
+            )
+            ->groupBy('month')
+            ->orderBy('month', 'desc')
+            ->limit(6)
+            ->get();
+        
+        // Get statistics by jenis logam
+        $jenisLogamStats = Material::select(
+                'jenis_logam',
+                DB::raw('COUNT(*) as total'),
+                DB::raw('AVG(harga_per_kg) as avg_price')
+            )
+            ->whereNotNull('jenis_logam')
+            ->groupBy('jenis_logam')
+            ->orderBy('total', 'desc')
+            ->get();
+        
+        return response()->json([
+            'monthly_stats' => $monthlyStats,
+            'jenis_logam_stats' => $jenisLogamStats,
+        ]);
+    }
+
+    // =========================== End Material Section Report  =========================== 
     
     private function getTopSupplier()
     {

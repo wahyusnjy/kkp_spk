@@ -32,9 +32,6 @@ class DatabaseSeeder extends Seeder
             KriteriaSeeder::class,
             SupplierSeeder::class,
             MaterialSeeder::class,
-            AssesmentSeeder::class,
-            AssessmentScoreSeeder::class,
-            TopsisResultSeeder::class,
         ]);
     }
 }

@@ -2,169 +2,263 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Kriteria Lengkap</title>
+    <title>Laporan Kriteria</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; font-size: 11px; color: #333; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
         
-        .header {
+        body { 
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12px; 
+            color: #000;
+            background: white;
+            padding: 20px;
+            line-height: 1.4;
+        }
+        
+        /* Header dengan logo dan informasi perusahaan */
+        .company-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #000;
             padding-bottom: 15px;
-            border-bottom: 3px solid #2563eb;
         }
-        .header h1 { font-size: 20px; color: #1e40af; margin-bottom: 5px; }
-        .header p { font-size: 10px; color: #666; }
         
-        .summary-grid {
-            display: table;
+        .logo-container {
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            position: relative;
         }
-        .summary-item {
-            display: table-cell;
+        
+        .logo-left {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30%;
+            text-align: left;
+        }
+        
+        .logo-center {
+            width: 100%;
             text-align: center;
-            padding: 15px;
-            background: #eff6ff;
-            border: 2px solid #bfdbfe;
-            width: 25%;
         }
-        .summary-label {
-            font-size: 9px;
-            color: #1e40af;
-            text-transform: uppercase;
-            margin-bottom: 5px;
+        
+        .company-logo {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
         }
-        .summary-value {
+        
+        .company-name {
             font-size: 18px;
             font-weight: bold;
-            color: #2563eb;
+            text-transform: uppercase;
+            margin: 5px 0;
+            letter-spacing: 1px;
         }
         
-        table {
+        .company-address {
+            font-size: 11px;
+            margin: 5px 0;
+            line-height: 1.3;
+        }
+        
+        .report-title {
+            text-align: center;
+            margin: 30px 0;
+            padding: 10px 0;
+        }
+        
+        .report-title h1 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+            text-decoration: underline;
+            text-transform: uppercase;
+        }
+        
+        .date-info {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 11px;
+        }
+        
+        /* Tabel di tengah dengan 2 kolom */
+        .criteria-table-container {
             width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 40px 0;
+        }
+        
+        .criteria-table {
+            width: 80%; /* Kurangi lebar agar tidak full width */
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin: 0 auto;
         }
-        table th {
-            background: #1e40af;
-            color: white;
-            padding: 8px;
-            text-align: left;
-            font-size: 10px;
-            border: 1px solid #1e3a8a;
-        }
-        table td {
-            padding: 6px;
-            border: 1px solid #ddd;
-            font-size: 10px;
-        }
-        table tr:nth-child(even) { background: #f8fafc; }
         
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 9px;
+        .criteria-table th {
+            border: 2px solid #000;
+            padding: 10px;
+            text-align: center; /* Tengahkan teks di header */
             font-weight: bold;
-        }
-        .badge-benefit { background: #d1fae5; color: #065f46; }
-        .badge-cost { background: #fee2e2; color: #991b1b; }
-        
-        .section-title {
-            background: #3b82f6;
-            color: white;
-            padding: 8px 10px;
-            margin: 15px 0 10px 0;
             font-size: 12px;
-            font-weight: bold;
+            background-color: #f0f0f0;
+            width: 50%; /* Setiap kolom 50% lebar */
         }
         
-        .footer {
-            position: fixed;
-            bottom: 0;
+        .criteria-table td {
+            border: 2px solid #000;
+            padding: 8px;
+            font-size: 11px;
+            vertical-align: middle;
+            text-align: center; /* Tengahkan teks di sel */
+            width: 50%; /* Setiap kolom 50% lebar */
+        }
+        
+        .criteria-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* Container pembungkus agar float tidak berantakan ke elemen bawahnya */
+        .signature-wrapper {
+            float: right;
+            width: 250px; /* Atur lebar sesuai kebutuhan */
+            text-align: center;
+        }
+
+        /* Override gaya lama */
+        .location-date {
+            text-align: center;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+
+        .signature-section {
+            margin-top: 10px; /* Kurangi margin karena sudah ada wrapper */
             width: 100%;
             text-align: center;
-            font-size: 8px;
-            color: #666;
-            padding: 5px;
-            border-top: 1px solid #ddd;
         }
         
-        .text-center { text-align: center; }
+        .signature-line {
+            display: inline-block;
+            width: 200px;
+            border-top: 1px solid #000;
+            margin-top: 60px;
+            padding-top: 5px;
+            font-size: 11px;
+        }
+
+        /* Tambahkan clear fix setelah separator jika diperlukan */
+        .separator {
+            border-top: 1px solid #000;
+            margin: 20px 0;
+            width: 100%;
+            clear: both;
+        }
+        
+        /* Print optimization */
+        @media print {
+            body {
+                padding: 15px;
+            }
+            
+            .criteria-table {
+                page-break-inside: avoid;
+            }
+            
+            .signature-section {
+                page-break-inside: avoid;
+            }
+            
+            .page-info {
+                position: fixed;
+                bottom: 15px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>LAPORAN KRITERIA LENGKAP</h1>
+    <!-- Header dengan logo dan informasi perusahaan -->
+    <div class="company-header">
+        <div class="logo-container">
+            <div class="logo-left">
+                <!-- Logo perusahaan -->
+                <div class="company-logo">
+                    <img src="{{ public_path('assets/logoamesu.png') }}" height="100" alt="">
+                </div>
+            </div>
+            
+            <div class="logo-center">
+                <!-- Nama perusahaan di tengah -->
+                <div class="company-name">PT AMESU UTAMA</div>
+                <div class="company-address">
+                    Jl. Benda No.88, RT.001/RW.003, Cikiwul,<br> 
+                    Kec. Bantar Gebang, Kota Bks, <br>
+                    Jawa Barat 17152
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Judul laporan -->
+    <div class="report-title">
+        <h1>LAPORAN DATA KRITERIA</h1>
+    </div>
+    
+    <!-- Info tanggal -->
+    <div class="date-info">
         <p>Dicetak pada: {{ $exportDate->format('d F Y H:i:s') }}</p>
     </div>
+    
+    <!-- Tabel Kriteria di tengah -->
+    <div class="criteria-table-container">
+        <table class="criteria-table">
+            <thead>
+                <tr>
+                    <th>ID KRITERIA</th>
+                    <th>NAMA KRITERIA</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($kriterias as $index => $kriteria)
+                <tr>
+                    <td><strong>{{ $kriteria->kode_kriteria ?? 'K' . str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}</strong></td>
+                    <td>{{ $kriteria->nama_kriteria }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="separator"></div>
 
-    <div class="section-title">📊 RINGKASAN KRITERIA</div>
-    <div class="summary-grid">
-        <div class="summary-item">
-            <div class="summary-label">Total Kriteria</div>
-            <div class="summary-value">{{ $summary['total_kriteria'] }}</div>
+    <div class="signature-wrapper">
+        
+        <div class="location-date">
+            <p>Bekasi, {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
+            Head QC
         </div>
-        <div class="summary-item">
-            <div class="summary-label">Benefit</div>
-            <div class="summary-value">{{ $summary['benefit_count'] }}</div>
+        
+        <div class="signature-section">
+            <div class="signature-block">
+                <div class="signature-placeholder"></div>
+                
+                <div style="margin-top: 50px;">
+                    <div class="signature-line">
+                        (Wahyu Hidayat)
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="summary-item">
-            <div class="summary-label">Cost</div>
-            <div class="summary-value">{{ $summary['cost_count'] }}</div>
-        </div>
-        <div class="summary-item">
-            <div class="summary-label">Total Bobot</div>
-            <div class="summary-value">{{ number_format($summary['total_weight'], 1) }}</div>
-        </div>
+
     </div>
 
-    <div class="section-title">📋 DETAIL KRITERIA</div>
-    <table>
-        <thead>
-            <tr>
-                <th style="width: 5%;">No</th>
-                <th style="width: 25%;">Nama Kriteria</th>
-                <th style="width: 10%;">Tipe</th>
-                <th style="width: 10%;">Bobot</th>
-                <th style="width: 10%;">Digunakan</th>
-                <th style="width: 13%;">Avg Score</th>
-                <th style="width: 13%;">Max Score</th>
-                <th style="width: 14%;">Keterangan</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($kriterias as $index => $kriteria)
-            <tr>
-                <td class="text-center">{{ $index + 1 }}</td>
-                <td><strong>{{ $kriteria->nama_kriteria }}</strong></td>
-                <td class="text-center">
-                    <span class="badge {{ $kriteria->type == 'benefit' ? 'badge-benefit' : 'badge-cost' }}">
-                        {{ $kriteria->type == 'benefit' ? 'Benefit' : 'Cost' }}
-                    </span>
-                </td>
-                <td class="text-center"><strong>{{ $kriteria->bobot }}</strong></td>
-                <td class="text-center">{{ $kriteria->usage_count }} assessment</td>
-                <td class="text-center">{{ number_format($kriteria->avg_score, 2) }}</td>
-                <td class="text-center">{{ number_format($kriteria->max_score, 2) }}</td>
-                <td>{{ $kriteria->keterangan ?? '-' }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    @if($summary['most_used'])
-    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 10px; margin: 15px 0;">
-        <strong style="color: #92400e;">Kriteria Paling Sering Digunakan:</strong><br>
-        <span style="font-size: 12px;">{{ $summary['most_used']->nama_kriteria }}</span> - 
-        Digunakan dalam <strong>{{ $summary['most_used']->usage_count }}</strong> assessment
-    </div>
-    @endif
-
-    <div class="footer">
-        <p>Sistem Pendukung Keputusan Pemilihan Supplier - Laporan Kriteria Lengkap</p>
-        <p>Dicetak: {{ $exportDate->format('d F Y H:i:s') }}</p>
-    </div>
+    <div style="clear: both;"></div>
+    
 </body>
 </html>

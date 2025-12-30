@@ -4,243 +4,423 @@
     <meta charset="UTF-8">
     <title>Executive Summary</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; font-size: 11px; color: #333; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
         
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
-            border-radius: 8px;
-        }
-        .header h1 { font-size: 24px; margin-bottom: 5px; }
-        .header p { font-size: 11px; opacity: 0.9; }
-        
-        .stats-grid {
-            display: table;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-        .stat-row {
-            display: table-row;
-        }
-        .stat-box {
-            display: table-cell;
-            text-align: center;
+        body { 
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 11px; 
+            color: #000;
             padding: 15px;
-            background: #eff6ff;
-            border: 2px solid #bfdbfe;
-            width: 25%;
-        }
-        .stat-label {
-            font-size: 9px;
-            color: #1e40af;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-        .stat-value {
-            font-size: 22px;
-            font-weight: bold;
-            color: #2563eb;
+            line-height: 1.4;
         }
         
-        .section {
-            margin-bottom: 20px;
+        /* Header dengan logo dan informasi perusahaan */
+        .company-header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #000;
+            padding-bottom: 15px;
         }
+        
+        .logo-container {
+            width: 100%;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .logo-left {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30%;
+            text-align: left;
+        }
+        
+        .logo-center {
+            width: 100%;
+            text-align: center;
+        }
+        
+        .company-logo {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+        }
+        
+        .company-name {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 5px 0;
+            letter-spacing: 1px;
+        }
+        
+        .company-address {
+            font-size: 10px;
+            margin: 5px 0;
+            line-height: 1.3;
+        }
+        
+        /* Judul Laporan */
+        .report-title {
+            text-align: center;
+            margin: 20px 0 15px 0;
+            padding-bottom: 5px;
+        }
+        
+        .report-title h1 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+            text-decoration: underline;
+            text-transform: uppercase;
+        }
+        
+        .date-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 10px;
+        }
+        
+        /* Section Title */
         .section-title {
-            background: #3b82f6;
-            color: white;
+            background-color: #f0f0f0;
+            color: #000;
             padding: 8px 10px;
-            margin: 10px 0;
+            margin: 20px 0 10px 0;
             font-size: 12px;
             font-weight: bold;
+            border: 1px solid #000;
+            border-left: 4px solid #000;
         }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
+        /* Statistik Grid */
+        .stats-grid {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
         }
-        table th {
-            background: #1e40af;
-            color: white;
-            padding: 8px;
-            text-align: left;
-            font-size: 10px;
-        }
-        table td {
-            padding: 6px;
-            border: 1px solid #ddd;
-            font-size: 10px;
-        }
-        table tr:nth-child(even) { background: #f8fafc; }
         
-        .highlight-box {
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
+        .stat-box {
+            flex: 1;
+            text-align: center;
             padding: 12px;
-            margin: 10px 0;
-        }
-        .highlight-box h4 {
-            color: #92400e;
-            margin-bottom: 5px;
+            border: 2px solid #000;
+            margin: 0 5px;
+            background-color: #fff;
         }
         
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
+        .stat-label {
             font-size: 9px;
             font-weight: bold;
+            color: #000;
+            margin-bottom: 8px;
         }
-        .badge-success { background: #d1fae5; color: #065f46; }
-        .badge-warning { background: #fef3c7; color: #92400e; }
-        .badge-info { background: #e0e7ff; color: #3730a3; }
         
-        .footer {
-            position: fixed;
-            bottom: 0;
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        /* Tabel */
+        .data-table {
             width: 100%;
-            text-align: center;
-            font-size: 8px;
-            color: #666;
-            padding: 5px;
-            border-top: 1px solid #ddd;
+            border-collapse: collapse;
+            margin: 15px 0 25px 0;
         }
         
-        .text-center { text-align: center; }
+        .data-table th {
+            border: 2px solid #000;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+            background-color: #f0f0f0;
+        }
+        
+        .data-table td {
+            border: 2px solid #000;
+            padding: 6px;
+            font-size: 10px;
+            vertical-align: middle;
+            text-align: center;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background-color: #fff3cd;
+            border: 2px solid #000;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .highlight-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 8px;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 9px;
+            font-weight: bold;
+            border: 1px solid #000;
+        }
+        
+        .status-completed {
+            background-color: #d4edda;
+            color: #000;
+        }
+        
+        .status-in-progress {
+            background-color: #e9ecef;
+            color: #000;
+        }
+        
+        .status-draft {
+            background-color: #f8f9fa;
+            color: #000;
+        }
+        
+        /* Signature Section */
+        .signature-wrapper {
+            float: right;
+            width: 250px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .location-date {
+            text-align: center;
+            margin-bottom: 5px;
+            width: 100%;
+        }
+        
+        .signature-line {
+            display: inline-block;
+            width: 200px;
+            border-top: 1px solid #000;
+            margin-top: 40px;
+            padding-top: 5px;
+            font-size: 11px;
+        }
+        
+        .separator {
+            border-top: 1px solid #000;
+            margin: 20px 0;
+            width: 100%;
+            clear: both;
+        }
+        
+        /* Clear fix */
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        
+        /* Print optimization */
+        @media print {
+            body {
+                padding: 10px;
+            }
+            
+            .data-table {
+                page-break-inside: avoid;
+            }
+            
+            .signature-wrapper {
+                page-break-inside: avoid;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>📊 EXECUTIVE SUMMARY</h1>
+    <!-- Header dengan logo dan informasi perusahaan -->
+    <div class="company-header">
+        <div class="logo-container">
+            <div class="logo-left">
+                <!-- Logo perusahaan -->
+                <div class="company-logo">
+                    <img src="{{ public_path('assets/logoamesu.png') }}" height="100" alt="">
+                </div>
+            </div>
+            
+            <div class="logo-center">
+                <!-- Nama perusahaan di tengah -->
+                <div class="company-name">PT AMESU UTAMA</div>
+                <div class="company-address">
+                    Jl. Benda No.88, RT.001/RW.003, Cikiwul,<br> 
+                    Kec. Bantar Gebang, Kota Bks, <br>
+                    Jawa Barat 17152
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Judul laporan -->
+    <div class="report-title">
+        <h1>EXECUTIVE SUMMARY</h1>
+    </div>
+    
+    <div class="date-info">
         <p>Sistem Pendukung Keputusan Pemilihan Supplier</p>
         <p>Dicetak pada: {{ $exportDate->format('d F Y H:i:s') }}</p>
     </div>
-
-    {{-- Assessment Statistics --}}
-    <div class="section-title">📋 STATISTIK ASSESSMENT</div>
+    
+    <!-- Statistik Assessment -->
+    <div class="section-title">STATISTIK ASSESSMENT</div>
     <div class="stats-grid">
-        <div class="stat-row">
-            <div class="stat-box">
-                <div class="stat-label">Total Assessment</div>
-                <div class="stat-value">{{ $summary['total_assessments'] }}</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Selesai</div>
-                <div class="stat-value" style="color: #10b981;">{{ $summary['completed_assessments'] }}</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Dalam Proses</div>
-                <div class="stat-value" style="color: #f59e0b;">{{ $summary['in_progress_assessments'] }}</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Draft</div>
-                <div class="stat-value" style="color: #6b7280;">{{ $summary['draft_assessments'] }}</div>
-            </div>
+        <div class="stat-box">
+            <div class="stat-label">Total Assessment</div>
+            <div class="stat-value">{{ $summary['total_assessments'] }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Selesai</div>
+            <div class="stat-value">{{ $summary['completed_assessments'] }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Dalam Proses</div>
+            <div class="stat-value">{{ $summary['in_progress_assessments'] }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Draft</div>
+            <div class="stat-value">{{ $summary['draft_assessments'] }}</div>
         </div>
     </div>
-
-    {{-- Supplier & Kriteria Statistics --}}
-    <div class="section-title">👥 SUPPLIER & KRITERIA</div>
+    
+    <!-- Supplier & Kriteria -->
+    <div class="section-title">SUPPLIER & KRITERIA</div>
     <div class="stats-grid">
-        <div class="stat-row">
-            <div class="stat-box">
-                <div class="stat-label">Total Supplier</div>
-                <div class="stat-value">{{ $summary['total_suppliers'] }}</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Supplier Aktif</div>
-                <div class="stat-value">{{ $summary['active_suppliers'] }}</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Total Kriteria</div>
-                <div class="stat-value">{{ $summary['total_kriteria'] }}</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Total Material</div>
-                <div class="stat-value">{{ $summary['total_materials'] }}</div>
-            </div>
+        <div class="stat-box">
+            <div class="stat-label">Total Supplier</div>
+            <div class="stat-value">{{ $summary['total_suppliers'] }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Supplier Aktif</div>
+            <div class="stat-value">{{ $summary['active_suppliers'] }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Total Kriteria</div>
+            <div class="stat-value">{{ $summary['total_kriteria'] }}</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Total Material</div>
+            <div class="stat-value">{{ $summary['total_materials'] }}</div>
         </div>
     </div>
-
-    {{-- Top Supplier --}}
+    
+    <!-- Top Supplier -->
     @if($summary['top_supplier'])
     <div class="highlight-box">
-        <h4>🏆 SUPPLIER TERBAIK</h4>
-        <p style="font-size: 13px; margin-top: 5px;">
-            <strong>{{ $summary['top_supplier']['supplier']->nama_supplier }}</strong> 
-            ({{ $summary['top_supplier']['supplier']->kode_supplier }})
+        <div class="highlight-title">SUPPLIER TERBAIK</div>
+        <p style="font-size: 12px; margin-bottom: 5px;">
+            <strong>{{ $summary['top_supplier']['supplier']->nama_supplier }}</strong>
         </p>
-        <p style="font-size: 10px; color: #666; margin-top: 3px;">
+        <p style="font-size: 10px; margin-bottom: 3px;">
+            Kode: {{ $summary['top_supplier']['supplier']->kode_supplier }}
+        </p>
+        <p style="font-size: 10px;">
             Memenangkan <strong>{{ $summary['top_supplier']['win_count'] }}</strong> assessment
         </p>
     </div>
     @endif
-
-    {{-- Recent Assessments --}}
-    <div class="section-title">🕒 ASSESSMENT TERBARU</div>
-    <table>
+    
+    <!-- Assessment Terbaru -->
+    <div class="section-title">ASSESSMENT TERBARU</div>
+    <table class="data-table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Material</th>
-                <th>Tahun</th>
-                <th>Status</th>
-                <th>Tanggal</th>
+                <th style="width: 10%;">ID</th>
+                <th style="width: 40%;">MATERIAL</th>
+                <th style="width: 15%;">TAHUN</th>
+                <th style="width: 15%;">STATUS</th>
+                <th style="width: 20%;">TANGGAL</th>
             </tr>
         </thead>
         <tbody>
             @foreach($summary['recent_assessments'] as $assessment)
             <tr>
-                <td class="text-center">#{{ $assessment->id }}</td>
+                <td>#{{ $assessment->id }}</td>
                 <td>{{ $assessment->material->nama_material }}</td>
-                <td class="text-center">{{ $assessment->tahun }}</td>
-                <td class="text-center">
+                <td>{{ $assessment->tahun }}</td>
+                <td>
                     @if($assessment->topsisResults->count() > 0)
-                        <span class="badge badge-success">Selesai</span>
+                        <span class="status-badge status-completed">Selesai</span>
                     @elseif($assessment->scores->count() > 0)
-                        <span class="badge badge-warning">Proses</span>
+                        <span class="status-badge status-in-progress">Proses</span>
                     @else
-                        <span class="badge badge-info">Draft</span>
+                        <span class="status-badge status-draft">Draft</span>
                     @endif
                 </td>
-                <td class="text-center">{{ \Carbon\Carbon::parse($assessment->created_at)->format('d/m/Y') }}</td>
+                <td>{{ \Carbon\Carbon::parse($assessment->created_at)->format('d/m/Y') }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
-
-    {{-- Recent Winners --}}
-    <div class="section-title">🎯 PEMENANG TERBARU</div>
-    <table>
+    
+    <!-- Pemenang Terbaru -->
+    <div class="section-title">PEMENANG TERBARU</div>
+    <table class="data-table">
         <thead>
             <tr>
-                <th>Supplier</th>
-                <th>Assessment</th>
-                <th>Material</th>
-                <th>Preference Score</th>
-                <th>Tanggal</th>
+                <th style="width: 30%;">SUPPLIER</th>
+                <th style="width: 10%;">ASSESSMENT</th>
+                <th style="width: 30%;">MATERIAL</th>
+                <th style="width: 15%;">SCORE</th>
+                <th style="width: 15%;">TANGGAL</th>
             </tr>
         </thead>
         <tbody>
             @foreach($summary['recent_winners'] as $winner)
             <tr>
                 <td><strong>{{ $winner->supplier->nama_supplier }}</strong></td>
-                <td class="text-center">#{{ $winner->assessment_id }}</td>
+                <td>#{{ $winner->assessment_id }}</td>
                 <td>{{ $winner->assessment->material->nama_material }}</td>
-                <td class="text-center"><strong>{{ number_format($winner->preference_score * 100, 2) }}%</strong></td>
-                <td class="text-center">{{ \Carbon\Carbon::parse($winner->created_at)->format('d/m/Y') }}</td>
+                <td><strong>{{ number_format($winner->preference_score * 100, 2) }}%</strong></td>
+                <td>{{ \Carbon\Carbon::parse($winner->created_at)->format('d/m/Y') }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
-
-    <div class="footer">
-        <p>Sistem Pendukung Keputusan Pemilihan Supplier - Executive Summary</p>
-        <p>Dicetak: {{ $exportDate->format('d F Y H:i:s') }}</p>
+    
+    <!-- Separator -->
+    <div class="separator"></div>
+    
+    <!-- Tanda tangan -->
+    <div class="signature-wrapper">
+        <div class="location-date">
+            <p>Bekasi, {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
+            Head QC
+        </div>
+        
+        <div class="signature-section">
+            <div class="signature-block">
+                <div class="signature-placeholder"></div>
+                
+                <div style="margin-top: 50px;">
+                    <div class="signature-line">
+                        (Wahyu Hidayat)
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <div class="clearfix"></div>
 </body>
 </html>

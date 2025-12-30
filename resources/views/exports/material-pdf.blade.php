@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Assessment</title>
+    <title>Laporan Material</title>
     <style>
         * { 
             margin: 0; 
@@ -88,20 +88,20 @@
         }
         
         /* Tabel di tengah */
-        .assessment-table-container {
+        .material-table-container {
             width: 100%;
             display: flex;
             justify-content: center;
             margin: 20px 0 40px 0;
         }
         
-        .assessment-table {
+        .material-table {
             width: 100%;
             border-collapse: collapse;
             margin: 0 auto;
         }
         
-        .assessment-table th {
+        .material-table th {
             border: 2px solid #000;
             padding: 8px;
             text-align: center;
@@ -110,7 +110,7 @@
             background-color: #f0f0f0;
         }
         
-        .assessment-table td {
+        .material-table td {
             border: 2px solid #000;
             padding: 6px;
             font-size: 10px;
@@ -118,46 +118,8 @@
             text-align: center;
         }
         
-        .assessment-table tr:nth-child(even) {
+        .material-table tr:nth-child(even) {
             background-color: #f9f9f9;
-        }
-        
-        /* Status Styling */
-        .status {
-            display: inline-block;
-            padding: 3px 8px;
-            font-size: 9px;
-            font-weight: bold;
-            border-radius: 3px;
-        }
-        
-        .status.selesai {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .status.scoring {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-        }
-        
-        .status.draft {
-            background-color: #f8f9fa;
-            color: #495057;
-            border: 1px solid #e9ecef;
-        }
-        
-        .winner-badge {
-            font-size: 8px;
-            font-weight: bold;
-            color: #d97706;
-            background-color: #fef3c7;
-            padding: 2px 6px;
-            border-radius: 3px;
-            display: inline-block;
-            margin-top: 2px;
         }
         
         /* Container pembungkus agar float tidak berantakan ke elemen bawahnya */
@@ -216,7 +178,7 @@
                 padding: 15px;
             }
             
-            .assessment-table {
+            .material-table {
                 page-break-inside: avoid;
             }
             
@@ -251,108 +213,47 @@
     
     <!-- Judul laporan -->
     <div class="report-title">
-        <h1>LAPORAN ASSESSMENT SUPPLIER</h1>
+        <h1>LAPORAN DATA MATERIAL</h1>
     </div>
     
     <!-- Info tanggal -->
     <div class="date-info">
         <p>Dicetak pada: {{ date('d F Y H:i:s') }}</p>
-        @if($filter['tahun'])
-            <p>Tahun: {{ $filter['tahun'] }}</p>
+        @if(isset($filter['start_date']) && isset($filter['end_date']))
+        <p>Periode: {{ date('d/m/Y', strtotime($filter['start_date'])) }} - {{ date('d/m/Y', strtotime($filter['end_date'])) }}</p>
         @endif
     </div>
     
-    <!-- Filter Info -->
-    @if(!empty(array_filter($filter)))
-    <div class="filter-info">
-        <h3>Filter yang diterapkan:</h3>
-        <div>
-            @if(!empty($filter['status']))
-                <strong>Status:</strong> {{ implode(', ', array_map('ucfirst', $filter['status'])) }}
-                @if($filter['tahun'] || ($filter['start_date'] && $filter['end_date'])) | @endif
-            @endif
-            @if($filter['tahun'])
-                <strong>Tahun:</strong> {{ $filter['tahun'] }}
-                @if($filter['start_date'] && $filter['end_date']) | @endif
-            @endif
-            @if($filter['start_date'] && $filter['end_date'])
-                <strong>Periode:</strong> {{ date('d/m/Y', strtotime($filter['start_date'])) }} - {{ date('d/m/Y', strtotime($filter['end_date'])) }}
-            @endif
-        </div>
-    </div>
-    @endif
     
-    <!-- Tabel Assessment -->
-    <div class="assessment-table-container">
-        <table class="assessment-table">
+    <!-- Tabel Material -->
+    <div class="material-table-container">
+        <table class="material-table">
             <thead>
                 <tr>
                     <th style="width: 5%;">NO</th>
-                    <th style="width: 20%;">MATERIAL</th>
-                    <th style="width: 8%;">TAHUN</th>
-                    <th style="width: 12%;">SUPPLIER</th>
-                    <th style="width: 12%;">STATUS</th>
-                    <th style="width: 18%;">PEMENANG</th>
-                    <th style="width: 10%;">SCORE</th>
-                    <th style="width: 15%;">DIBUAT</th>
+                    <th style="width: 20%;">NAMA MATERIAL</th>
+                    <th style="width: 20%;">SUPPLIER</th>
+                    <th style="width: 12%;">JENIS LOGAM</th>
+                    <th style="width: 10%;">GRADE</th>
+                    <th style="width: 18%;">SPESIFIKASI TEKNIS</th>
+                    <th style="width: 15%;">HARGA PER KG</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($assessments as $index => $assessment)
-                @php
-                    $winner = $assessment->topsisResults()->orderBy('rank')->first();
-                    $status = $assessment->status;
-                    
-                    if ($status === 'completed') {
-                        $statusText = 'Selesai';
-                        $statusClass = 'selesai';
-                    } elseif ($status === 'scoring') {
-                        $statusText = 'Scoring';
-                        $statusClass = 'scoring';
-                    } else {
-                        $statusText = 'Draft';
-                        $statusClass = 'draft';
-                    }
-                @endphp
+                @forelse($materials as $index => $material)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>
-                        <strong>{{ $assessment->material->nama_material ?? '-' }}</strong>
-                        @if($assessment->deskripsi)
-                            <br><small>{{ Str::limit($assessment->deskripsi, 30) }}</small>
-                        @endif
-                    </td>
-                    <td>{{ $assessment->tahun }}</td>
-                    <td>{{ $assessment->supplier_count }} supplier</td>
-                    <td>
-                        <span class="status {{ $statusClass }}">
-                            {{ $statusText }}
-                        </span>
-                    </td>
-                    <td>
-                        @if($winner)
-                            <strong>{{ $winner->supplier->nama_supplier }}</strong>
-                            <br><span class="winner-badge">Peringkat 1</span>
-                        @else
-                            <em style="color: #6c757d;">Belum ada</em>
-                        @endif
-                    </td>
-                    <td>
-                        @if($winner)
-                            <strong>{{ number_format($winner->preference_score * 100, 2) }}%</strong>
-                        @else
-                            -
-                        @endif
-                    </td>
-                    <td>
-                        {{ \Carbon\Carbon::parse($assessment->created_at)->format('d/m/Y') }}
-                        <br>{{ \Carbon\Carbon::parse($assessment->created_at)->format('H:i') }}
-                    </td>
+                    <td><strong>{{ $index + 1 }}</strong></td>
+                    <td>{{ $material->nama_material }}</td>
+                    <td>{{ $material->supplier ? $material->supplier->nama_supplier : '-' }}</td>
+                    <td>{{ $material->jenis_logam ?? '-' }}</td>
+                    <td>{{ $material->grade ?? '-' }}</td>
+                    <td>{{ $material->spesifikasi_teknis ?? '-' }}</td>
+                    <td>Rp {{ number_format($material->harga_per_kg ?? 0, 0, ',', '.') }}</td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" style="text-align: center; padding: 20px; color: #6c757d; font-style: italic;">
-                        Tidak ada data assessment ditemukan
+                    <td colspan="7" style="text-align: center; padding: 20px; color: #6c757d; font-style: italic;">
+                        Tidak ada data material ditemukan
                     </td>
                 </tr>
                 @endforelse
