@@ -47,6 +47,7 @@
                     <flux:navlist.item icon="document-chart-bar" :href="route('reports.suppliers')" :current="request()->routeIs('reports.suppliers')" wire:navigate>{{ __('Supplier Reports') }}</flux:navlist.item>
                     <flux:navlist.item icon="clipboard-document-list" :href="route('reports.assessments')" :current="request()->routeIs('reports.assessments')" wire:navigate>{{ __('Assessment Reports') }}</flux:navlist.item>
                     <flux:navlist.item icon="circle-stack" :href="route('reports.kriteria')" :current="request()->routeIs('reports.kriteria')" wire:navigate>{{ __('Kriteria Report') }}</flux:navlist.item>
+                    <flux:navlist.item icon="square-3-stack-3d" :href="route('reports.material')" :current="request()->routeIs('reports.material')" wire:navigate>{{ __('Material Report') }}</flux:navlist.item>
                     <flux:navlist.item icon="presentation-chart-line" :href="route('reports.executive-summary')" :current="request()->routeIs('reports.executive-summary')" wire:navigate>{{ __('Executive Summary') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
