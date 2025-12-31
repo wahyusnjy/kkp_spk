@@ -172,7 +172,7 @@
                         </div>
                     </a>
 
-                    <a href="{{ route('results.history') }}" class="group bg-gradient-to-br from-dark-700 via-dark-800 to-amber-900/30 hover:from-amber-900/40 hover:to-amber-800/30 rounded-xl p-5 transition-all duration-300 border border-dark-600 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10">
+                    <a href="{{ route('assessments.index') }}" class="group bg-gradient-to-br from-dark-700 via-dark-800 to-amber-900/30 hover:from-amber-900/40 hover:to-amber-800/30 rounded-xl p-5 transition-all duration-300 border border-dark-600 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10">
                         <div class="flex items-center gap-4">
                             <div class="bg-gradient-to-br from-amber-600 to-amber-800 p-3 rounded-lg group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-chart-bar text-white text-xl"></i>
