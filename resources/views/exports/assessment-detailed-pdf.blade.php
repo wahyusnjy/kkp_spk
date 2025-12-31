@@ -240,6 +240,7 @@
             width: 250px;
             text-align: center;
             margin-top: 30px;
+            page-break-inside: avoid; /* Mencegah signature section terpotong antar halaman */
         }
         
         .location-date {
@@ -262,6 +263,7 @@
             margin: 20px 0;
             width: 100%;
             clear: both;
+            page-break-inside: avoid; /* Mencegah separator terpotong */
         }
         
         /* Highlight dan Formula */

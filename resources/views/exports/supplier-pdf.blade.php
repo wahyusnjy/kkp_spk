@@ -148,6 +148,7 @@
             float: right;
             width: 250px;
             text-align: center;
+            page-break-inside: avoid; /* Mencegah signature section terpotong antar halaman */
         }
 
         .location-date {
@@ -160,6 +161,7 @@
             margin-top: 10px;
             width: 100%;
             text-align: center;
+            page-break-inside: avoid; /* Mencegah signature section terpotong */
         }
         
         .signature-line {
@@ -176,6 +178,7 @@
             margin: 20px 0;
             width: 100%;
             clear: both;
+            page-break-inside: avoid; /* Mencegah separator terpotong */
         }
         
         /* Filter Info */

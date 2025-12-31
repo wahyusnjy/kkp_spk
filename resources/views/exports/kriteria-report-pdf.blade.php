@@ -129,6 +129,7 @@
             float: right;
             width: 250px; /* Atur lebar sesuai kebutuhan */
             text-align: center;
+            page-break-inside: avoid; /* Mencegah signature section terpotong antar halaman */
         }
 
         /* Override gaya lama */
@@ -142,6 +143,7 @@
             margin-top: 10px; /* Kurangi margin karena sudah ada wrapper */
             width: 100%;
             text-align: center;
+            page-break-inside: avoid; /* Mencegah signature section terpotong */
         }
         
         .signature-line {
@@ -159,6 +161,7 @@
             margin: 20px 0;
             width: 100%;
             clear: both;
+            page-break-inside: avoid; /* Mencegah separator terpotong */
         }
         
         /* Print optimization */
@@ -172,6 +175,10 @@
             }
             
             .signature-section {
+                page-break-inside: avoid;
+            }
+            
+            .signature-wrapper {
                 page-break-inside: avoid;
             }
             
