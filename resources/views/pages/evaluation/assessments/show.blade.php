@@ -300,8 +300,8 @@
                                                     <div>
                                                         <h5 class="text-white font-medium">{{ $score->kriteria->nama_kriteria }}</h5>
                                                         <div class="flex items-center gap-2 mt-1">
-                                                            <span class="text-xs px-2 py-1 rounded {{ $score->kriteria->jenis == 'benefit' ? 'bg-green-600/20 text-green-400' : 'bg-red-600/20 text-red-400' }}">
-                                                                {{ $score->kriteria->jenis == 'benefit' ? 'Benefit' : 'Cost' }}
+                                                            <span class="text-xs px-2 py-1 rounded {{ $score->kriteria->type == 'benefit' ? 'bg-green-600/20 text-green-400' : 'bg-red-600/20 text-red-400' }}">
+                                                                {{ $score->kriteria->type == 'benefit' ? 'Benefit' : 'Cost' }}
                                                             </span>
                                                             <span class="text-xs px-2 py-1 bg-blue-600/20 text-blue-400 rounded">
                                                                 Bobot: {{ $score->kriteria->bobot }}%
