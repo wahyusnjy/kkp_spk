@@ -30,9 +30,9 @@
                 @if(auth()->user()->role === 'admin')
                 {{-- Masters - Only Admin --}}
                 <flux:navlist.group :heading="__('Masters')" class="grid">
-                    <flux:navlist.item icon="clipboard-document-list" :href="route('kriteria.index')" :current="request()->routeIs('kriteria.*')" wire:navigate>{{ __('Kriteria') }}</flux:navlist.item>
-                    <flux:navlist.item icon="circle-stack" :href="route('supplier.index')" :current="request()->routeIs('supplier.*')" wire:navigate>{{ __('Supplier') }}</flux:navlist.item>
-                    <flux:navlist.item icon="square-3-stack-3d" :href="route('material.index')" :current="request()->routeIs('material.*')" wire:navigate>{{ __('Material') }}</flux:navlist.item>
+                    <flux:navlist.item icon="clipboard-document-list" :href="route('kriteria.index')" :current="request()->routeIs('kriteria.*')" wire:navigate>{{ __('Kriterias') }}</flux:navlist.item>
+                    <flux:navlist.item icon="circle-stack" :href="route('supplier.index')" :current="request()->routeIs('supplier.*')" wire:navigate>{{ __('Suppliers') }}</flux:navlist.item>
+                    <flux:navlist.item icon="square-3-stack-3d" :href="route('material.index')" :current="request()->routeIs('material.*')" wire:navigate>{{ __('Materials') }}</flux:navlist.item>
                     <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
                 </flux:navlist.group>
                 @endif
@@ -46,9 +46,9 @@
                 <flux:navlist.group :heading="__('Reports')" class="grid">
                     <flux:navlist.item icon="document-chart-bar" :href="route('reports.suppliers')" :current="request()->routeIs('reports.suppliers')" wire:navigate>{{ __('Supplier Reports') }}</flux:navlist.item>
                     <flux:navlist.item icon="clipboard-document-list" :href="route('reports.assessments')" :current="request()->routeIs('reports.assessments')" wire:navigate>{{ __('Assessment Reports') }}</flux:navlist.item>
-                    <flux:navlist.item icon="circle-stack" :href="route('reports.kriteria')" :current="request()->routeIs('reports.kriteria')" wire:navigate>{{ __('Kriteria Report') }}</flux:navlist.item>
-                    <flux:navlist.item icon="square-3-stack-3d" :href="route('reports.material')" :current="request()->routeIs('reports.material')" wire:navigate>{{ __('Material Report') }}</flux:navlist.item>
-                    <flux:navlist.item icon="presentation-chart-line" :href="route('reports.executive-summary')" :current="request()->routeIs('reports.executive-summary')" wire:navigate>{{ __('Executive Summary') }}</flux:navlist.item>
+                    <flux:navlist.item icon="circle-stack" :href="route('reports.kriteria')" :current="request()->routeIs('reports.kriteria')" wire:navigate>{{ __('Kriteria Reports') }}</flux:navlist.item>
+                    <flux:navlist.item icon="square-3-stack-3d" :href="route('reports.material')" :current="request()->routeIs('reports.material')" wire:navigate>{{ __('Material Reports') }}</flux:navlist.item>
+                    <flux:navlist.item icon="presentation-chart-line" :href="route('reports.executive-summary')" :current="request()->routeIs('reports.executive-summary')" wire:navigate>{{ __('Executive Summaries') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
